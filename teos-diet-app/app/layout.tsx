@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { ThemeProvider } from './providers'
+import { Providers } from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider>
+        <Providers>
           {/*
             Do not render Navigation here. Navigation and dashboard shell are provided by DashboardLayout for authenticated sections.
             This allows public pages (login, signup, etc) to be rendered without dashboard chrome.
@@ -26,7 +26,7 @@ export default function RootLayout({
           <main className="min-h-screen pt-6">
             {children}
           </main>
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )
