@@ -1,0 +1,389 @@
+{
+  "days": {
+    "monday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "OAT 40g + MILK 100g",
+            "calories": 195.0
+          },
+          {
+            "food": "BANANA",
+            "calories": 105.0
+          },
+          {
+            "food": "BLUEBERRIES 15",
+            "calories": 12.0
+          }
+        ],
+        "lunch": [
+          {
+            "food": "CHICKEN BREAST ~150g",
+            "calories": 225.0
+          },
+          {
+            "food": "STEAMED VEG 200g",
+            "calories": 60.0
+          },
+          {
+            "food": "PLAIN WHOLE PASTA 80g + oil q.b.",
+            "calories": 150.0
+          }
+        ],
+        "snack": [
+          {
+            "food": "YOUGURT",
+            "calories": 96.0
+          },
+          {
+            "food": "GREEN TEA",
+            "calories": 2.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "SALMON ~210g",
+            "calories": 450.0
+          },
+          {
+            "food": "VEG 200g",
+            "calories": 60.0
+          },
+          {
+            "food": "BREAD 80g",
+            "calories": 210.0
+          }
+        ]
+      },
+      "totalCalories": 1565.5
+    },
+    "tuesday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "OAT 40g + MILK 100g",
+            "calories": 195.0
+          },
+          {
+            "food": "STRAWBERRIES",
+            "calories": 15.0
+          },
+          {
+            "food": "BLUEBERRIES 15",
+            "calories": 12.0
+          }
+        ],
+        "lunch": [
+          {
+            "food": "ALOE DRINK",
+            "calories": null
+          },
+          {
+            "food": "FRUIT ~160g",
+            "calories": 80.0
+          },
+          {
+            "food": "PASTA WITH SAUCE 80g + Passata + Oil",
+            "calories": 320.0
+          }
+        ],
+        "snack": [
+          {
+            "food": "SMOKED SALMON BAGEL W CHEESE SPREAD",
+            "calories": 300.0
+          },
+          {
+            "food": "GREEN TEA",
+            "calories": 2.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "STEAK ~220g",
+            "calories": 614.0
+          },
+          {
+            "food": "VEG",
+            "calories": 60.0
+          },
+          {
+            "food": "POTATO ~240g",
+            "calories": 240.0
+          }
+        ]
+      },
+      "totalCalories": 1826.5
+    },
+    "wednesday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "OAT 40g + MILK 100g",
+            "calories": 195.0
+          },
+          {
+            "food": "STRAWBERRIES",
+            "calories": 15.0
+          },
+          {
+            "food": "BLUEBERRIES 15",
+            "calories": 12.0
+          }
+        ],
+        "lunch": [
+          {
+            "food": "TUNA 86g",
+            "calories": 300.0
+          },
+          {
+            "food": "SALAD 80g",
+            "calories": 60.0
+          },
+          {
+            "food": "JACKET POTATO 260g",
+            "calories": 248.0
+          }
+        ],
+        "snack": [
+          {
+            "food": "YOUGURT",
+            "calories": 96.0
+          },
+          {
+            "food": "GREEN TEA",
+            "calories": 2.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "FISH bass 180g",
+            "calories": 348.0
+          },
+          {
+            "food": "VEG",
+            "calories": 60.0
+          },
+          {
+            "food": "BREAD",
+            "calories": 210.0
+          }
+        ]
+      },
+      "totalCalories": 1373.5
+    },
+    "thursday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "EGG",
+            "calories": 200.0
+          },
+          {
+            "food": "FRUIT",
+            "calories": 80.0
+          }
+        ],
+        "lunch": [
+          {
+            "food": "CHICKEN BREAST",
+            "calories": 225.0
+          },
+          {
+            "food": "STEAMED VEG",
+            "calories": 60.0
+          },
+          {
+            "food": "PLAIN WHOLE PASTA",
+            "calories": 150.0
+          }
+        ],
+        "snack": [
+          {
+            "food": "FRUIT",
+            "calories": 80.0
+          },
+          {
+            "food": "GREEN TEA",
+            "calories": 2.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "LEGUMES 200g",
+            "calories": 700.0
+          },
+          {
+            "food": "VEG",
+            "calories": 60.0
+          },
+          {
+            "food": "BREAD",
+            "calories": 210.0
+          }
+        ]
+      },
+      "totalCalories": 1940.5
+    },
+    "friday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "OAT + MILK",
+            "calories": 195.0
+          },
+          {
+            "food": "BANANA",
+            "calories": 105.0
+          },
+          {
+            "food": "BLUEBERRIES",
+            "calories": 12.0
+          }
+        ],
+        "lunch": [
+          {
+            "food": "SALMON ~210g",
+            "calories": 450.0
+          },
+          {
+            "food": "VEG 200g",
+            "calories": 60.0
+          },
+          {
+            "food": "BREAD 80g",
+            "calories": 210.0
+          }
+        ],
+        "snack": [
+          {
+            "food": "YOUGURT",
+            "calories": 96.0
+          },
+          {
+            "food": "GREEN TEA",
+            "calories": 2.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "MINCE BEEF 5%FAT 200g",
+            "calories": 273.0
+          },
+          {
+            "food": "VEG",
+            "calories": 80.0
+          },
+          {
+            "food": "POTATO",
+            "calories": 240.0
+          },
+          {
+            "food": "cheat",
+            "calories": null
+          }
+        ]
+      },
+      "totalCalories": 1723.5
+    },
+    "saturday": {
+      "meals": {
+        "lunch": [
+          {
+            "food": "PAD THAI",
+            "calories": 838.0
+          },
+          {
+            "food": "PASTA WITH SAUCE tomato 40 oil 1tbs 130 pasta 80g 119",
+            "calories": null
+          }
+        ],
+        "snack": [
+          {
+            "food": "FRUIT",
+            "calories": 80.0
+          }
+        ],
+        "dinner": [
+          {
+            "food": "PIZZA",
+            "calories": 1000.0
+          },
+          {
+            "food": "Drinsks",
+            "calories": null
+          }
+        ]
+      },
+      "totalCalories": null
+    },
+    "sunday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "EGGs + stuff",
+            "calories": 300.0
+          }
+        ],
+        "lunch": [
+          {
+            "food": "ROAST",
+            "calories": 1200.0
+          }
+        ],
+        "dinner": [
+          {
+            "food": "LASAGNA 420g",
+            "calories": 750.0
+          }
+        ]
+      },
+      "totalCalories": null
+    }
+  },
+  "nutritionalInfo": {
+    "adultMale": {
+      "recommendedDailyIntake": 2100
+    },
+    "adultFemale": {
+      "recommendedDailyIntake": 1500
+    }
+  },
+  "foodReference": {
+    "OAT": {
+      "calories": 143,
+      "description": "OAT 40g = 143 + MILK 100g = 52"
+    },
+    "MOZZARELLA": {
+      "calories": 280,
+      "description": "MOZZARELLA 100g = 280Kcal"
+    },
+    "G": {
+      "calories": 38,
+      "description": "PASSATA 100G = 38Kcal"
+    },
+    "FRUIT orange": {
+      "calories": 140,
+      "description": "FRUIT orange = 140g = 69 apple = 180g = 95"
+    },
+    "SMOKED SALMON BAGEL bagel": {
+      "calories": 219,
+      "description": "SMOKED SALMON BAGEL bagel 85g = 219Kcal salmon 40g = 80Kcal salmon 100g = 199Kcal"
+    },
+    "SALMON": {
+      "calories": 468,
+      "description": "SALMON 227g = 468 100g = 220Kcal"
+    },
+    "g": {
+      "calories": 192,
+      "description": "MINCE BEEF 5%FAT 200g 100g = 192Kcal"
+    },
+    "LEGUMES lentils": {
+      "calories": 248,
+      "description": "LEGUMES lentils 200g = 248Kcal Beans 200g = 190Kcal 110g = 150"
+    },
+    "ml": {
+      "calories": 625,
+      "description": "WINE GLASS 84Kcal 750ml = 625Kcal"
+    }
+  }
+}
