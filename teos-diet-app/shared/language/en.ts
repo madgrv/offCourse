@@ -2,6 +2,13 @@
 // Add new keys as needed for new features. This file should be imported wherever text is needed.
 
 const en = {
+  // --- Auth & Login ---
+  password: 'Password',
+  forgotPassword: 'Forgot password?',
+  resetEmailSent: 'If this email is registered, a password reset link has been sent.',
+  sending: 'Sending...',
+  sendResetLink: 'Send reset link',
+  email: 'Email',
   weeklyDietPlan: 'Weekly Diet Plan',
   dailyTotal: 'Daily Total:',
   total: 'Total:',

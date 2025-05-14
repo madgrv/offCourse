@@ -9,6 +9,13 @@ import { supabase } from "@/app/lib/supabaseClient";
 import en from "@/shared/language/en";
 
 export default function LoginPage() {
+  // --- Forgot Password State ---
+  const [showReset, setShowReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
+  const [resetError, setResetError] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -73,7 +80,7 @@ export default function LoginPage() {
             </div>
             <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium">
-                Password
+                {en.password}
               </label>
               <div className="relative">
                 <input
@@ -87,6 +94,58 @@ export default function LoginPage() {
                   suppressHydrationWarning
                 />
               </div>
+              {/* Forgot Password Link - shows inline reset form */}
+              <button
+                type="button"
+                className="text-xs text-primary hover:underline mt-1"
+                onClick={() => setShowReset(true)}
+                aria-label={en.forgotPassword}
+              >
+                {en.forgotPassword}
+              </button>
+              {showReset && (
+                <form
+                  className="mt-2 flex flex-col gap-2"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    setResetMessage("");
+                    setResetError("");
+                    setResetLoading(true);
+                    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail);
+                    setResetLoading(false);
+                    if (error) {
+                      setResetError(error.message);
+                    } else {
+                      setResetMessage(en.resetEmailSent);
+                    }
+                  }}
+                >
+                  <input
+                    type="email"
+                    required
+                    value={resetEmail}
+                    onChange={e => setResetEmail(e.target.value)}
+                    className="w-full px-2 py-1 border rounded bg-background text-sm"
+                    placeholder={en.email}
+                  />
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={resetLoading}
+                  >
+                    {resetLoading ? en.sending : en.sendResetLink}
+                  </Button>
+                  {resetMessage && <div className="text-green-600 text-xs">{resetMessage}</div>}
+                  {resetError && <div className="text-red-600 text-xs">{resetError}</div>}
+                  <button
+                    type="button"
+                    className="text-xs underline text-muted-foreground mt-1"
+                    onClick={() => setShowReset(false)}
+                  >
+                    {en.cancel}
+                  </button>
+                </form>
+              )}
             </div>
             <Button 
               type="submit" 
