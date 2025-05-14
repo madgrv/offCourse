@@ -15,6 +15,8 @@ const en = {
   calories: 'kcal',
   markAsCompleted: 'Mark as completed',
   editMeal: 'Edit meal',
+  remove: 'Remove', // Remove a food item
+  addFood: 'Add food', // Add a new food item
   save: 'Save',
   cancel: 'Cancel',
   food: 'Food',
