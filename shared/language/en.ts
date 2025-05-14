@@ -27,7 +27,15 @@ const en = {
   passwordsDoNotMatch: 'Passwords do not match',
   registrationSuccess: 'Registration successful! Please check your email to verify your account.',
   loginSuccess: 'Login successful! Redirecting...',
-  logout: 'Logout', // Localised text for logout button
+  logout: 'Logout',
+  selectDietPlan: 'Select a diet plan',
+  chooseDietPlan: 'Choose a diet plan',
+  useThisPlan: 'Use this plan',
+  cloning: 'Cloning…',
+  loading: 'Loading…',
+  failedToFetchTemplates: 'Failed to fetch diet templates.',
+  cloneFailed: 'Failed to clone diet plan.',
+  trackDietIntro: 'Track your diet and nutrition with this interactive application.'
 };
 
 export default en;
