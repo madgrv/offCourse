@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import en from '../../../shared/language/en';
 
 // Use environment variables for security
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -15,16 +16,31 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function POST(req: NextRequest) {
+  // This endpoint clones a template diet plan for the authenticated user.
+  // It ensures all relevant fields are copied and errors are logged for transparency.
   try {
-    const { templateId } = await req.json();
+    // Parse the request body with better error handling
+    let templateId;
+    try {
+      const body = await req.json();
+      templateId = body.templateId;
+      console.log('Received template ID:', templateId);
+    } catch (parseError) {
+      console.error('JSON parsing error:', parseError);
+      return NextResponse.json({ 
+        success: false, 
+        error: `${en.cloneInvalidRequest}: Invalid JSON in request body` 
+      }, { status: 400 });
+    }
+    
     if (!templateId) {
-      return NextResponse.json({ success: false, error: 'Template ID is required.' }, { status: 400 });
+      return NextResponse.json({ success: false, error: en.cloneMissingTemplateId }, { status: 400 });
     }
 
     // Get user session (enforces authentication)
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) {
-      return NextResponse.json({ success: false, error: 'Authentication required.' }, { status: 401 });
+      return NextResponse.json({ success: false, error: en.cloneAuthRequired }, { status: 401 });
     }
 
     // Fetch the template plan (must be is_template=true)
@@ -35,7 +51,7 @@ export async function POST(req: NextRequest) {
       .eq('is_template', true)
       .single();
     if (templateError || !template) {
-      return NextResponse.json({ success: false, error: 'Template not found.' }, { status: 404 });
+      return NextResponse.json({ success: false, error: en.cloneTemplateNotFound }, { status: 404 });
     }
 
     // Clone diet_plans row for the user
@@ -50,39 +66,50 @@ export async function POST(req: NextRequest) {
       .select()
       .single();
     if (newPlanError || !newPlan) {
-      return NextResponse.json({ success: false, error: 'Failed to create user plan.' }, { status: 500 });
+      return NextResponse.json({ success: false, error: en.cloneCreatePlanFailed }, { status: 500 });
     }
 
-    // Clone all related days, meals, and food items
+    // Error collection for transparency
+    const errors: any[] = [];
+
     // Fetch all days for the template
     const { data: templateDays, error: daysError } = await supabase
       .from('diet_days')
       .select('*')
       .eq('diet_plan_id', templateId);
     if (daysError) {
-      return NextResponse.json({ success: false, error: 'Failed to fetch template days.' }, { status: 500 });
+      return NextResponse.json({ success: false, error: en.cloneFetchDaysFailed }, { status: 500 });
     }
 
-    // For each day, clone and insert
+    // For each day, clone and insert all relevant fields
     for (const day of templateDays) {
       const { data: newDay, error: newDayError } = await supabase
         .from('diet_days')
         .insert({
           diet_plan_id: newPlan.id,
-          day_of_week: day.day_of_week
+          day_of_week: day.day_of_week,
+          total_calories: day.total_calories ?? null
         })
         .select()
         .single();
-      if (newDayError || !newDay) continue; // Skip this day on error
+      if (newDayError || !newDay) {
+        errors.push({ type: 'day', templateDayId: day.id, error: newDayError });
+        console.error('Failed to clone day', day.id, newDayError);
+        continue;
+      }
 
       // Fetch meals for this template day
-      const { data: templateMeals } = await supabase
+      const { data: templateMeals, error: mealsError } = await supabase
         .from('diet_meals')
         .select('*')
         .eq('diet_day_id', day.id);
-      if (!templateMeals) continue;
+      if (mealsError || !templateMeals) {
+        errors.push({ type: 'meals', templateDayId: day.id, error: mealsError });
+        console.error('Failed to fetch meals for day', day.id, mealsError);
+        continue;
+      }
 
-      // For each meal, clone and insert
+      // For each meal, clone and insert all relevant fields
       for (const meal of templateMeals) {
         const { data: newMeal, error: newMealError } = await supabase
           .from('diet_meals')
@@ -92,32 +119,64 @@ export async function POST(req: NextRequest) {
           })
           .select()
           .single();
-        if (newMealError || !newMeal) continue; // Skip this meal on error
+        if (newMealError || !newMeal) {
+          errors.push({ type: 'meal', templateMealId: meal.id, error: newMealError });
+          console.error('Failed to clone meal', meal.id, newMealError);
+          continue;
+        }
 
         // Fetch food items for this template meal
-        const { data: templateFoods } = await supabase
+        const { data: templateFoods, error: foodsError } = await supabase
           .from('diet_food_items')
           .select('*')
           .eq('diet_meal_id', meal.id);
-        if (!templateFoods) continue;
+        if (foodsError || !templateFoods) {
+          errors.push({ type: 'foods', templateMealId: meal.id, error: foodsError });
+          console.error('Failed to fetch foods for meal', meal.id, foodsError);
+          continue;
+        }
 
-        // For each food item, clone and insert
+        // For each food item, clone and insert all relevant fields
         for (const food of templateFoods) {
-          await supabase
+          const { error: foodInsertError } = await supabase
             .from('diet_food_items')
             .insert({
               diet_meal_id: newMeal.id,
-              food: food.food,
-              calories: food.calories
+              food_name: food.food_name,
+              calories: food.calories,
+              carbohydrates: food.carbohydrates,
+              sugars: food.sugars,
+              protein: food.protein,
+              fat: food.fat
             });
+          if (foodInsertError) {
+            errors.push({ type: 'food', templateFoodId: food.id, error: foodInsertError });
+            console.error('Failed to clone food item', food.id, foodInsertError);
+          }
         }
       }
     }
 
+    // Return success, but include errors if any occurred
+    if (errors.length > 0) {
+      return NextResponse.json({ success: true, dietPlanId: newPlan.id, partial: true, errors, message: en.clonePartialSuccess }, { status: 207 });
+    }
     return NextResponse.json({ success: true, dietPlanId: newPlan.id });
   } catch (err) {
-    // Log and return error
+    // Log and return error with detailed information for debugging
     console.error('Error cloning diet:', err);
-    return NextResponse.json({ success: false, error: 'Server error.' }, { status: 500 });
+    
+    // Provide more detailed error information in development
+    const errorMessage = process.env.NODE_ENV === 'development' 
+      ? `${en.cloneServerError} ${err instanceof Error ? err.message : 'Unknown error'}` 
+      : en.cloneServerError;
+    
+    return NextResponse.json({ 
+      success: false, 
+      error: errorMessage,
+      // Include stack trace in development for debugging
+      ...(process.env.NODE_ENV === 'development' && { stack: err instanceof Error ? err.stack : undefined })
+    }, { status: 500 });
   }
 }
+

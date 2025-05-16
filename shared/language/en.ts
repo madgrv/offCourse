@@ -2,6 +2,21 @@
 // Add new keys as needed for new features. This file should be imported wherever text is needed.
 
 const en = {
+  // --- Diet Plan Page ---
+  dietPlan: {
+    defaultTitle: 'Weekly Diet Plan',
+    defaultDescription: 'Your personalised nutrition plan',
+    noMealsPlanned: 'No meals planned for this day',
+  },
+  // --- Diet Plan Cloning (API) ---
+  cloneMissingTemplateId: 'Template ID is required.',
+  cloneAuthRequired: 'Authentication required.',
+  cloneTemplateNotFound: 'Template not found.',
+  cloneCreatePlanFailed: 'Failed to create user plan.',
+  cloneFetchDaysFailed: 'Failed to fetch template days.',
+  clonePartialSuccess: 'Plan cloned with some errors. See details.',
+  cloneServerError: 'A server error occurred while cloning the plan.',
+  cloneInvalidRequest: 'Invalid request format.',
   // --- Auth & Login ---
   password: 'Password',
   forgotPassword: 'Forgot password?',
@@ -21,6 +36,15 @@ const en = {
   cancel: 'Cancel',
   food: 'Food',
   weight: 'Weight (g)',
+  quantity: 'Quantity',
+  unit: 'Unit',
+  nutritionalInfo: 'Nutritional Information',
+  showDetails: 'Show details',
+  hideDetails: 'Hide details',
+  carbs: 'Carbohydrates',
+  sugars: 'Sugars',
+  protein: 'Protein',
+  fat: 'Fat',
   mealCompleted: 'Meal completed',
   adjustMeal: 'Adjust meal',
   caloriesEaten: 'Calories',

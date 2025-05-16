@@ -1,9 +1,17 @@
 // Types for the diet data structure
 
-// Food item with calories
+// Food item with calories and macronutrients
 export interface FoodItem {
+  id?: string; // Database ID for existing items
   food: string;
   calories: number | null;
+  quantity?: number;
+  unit?: string;
+  completed?: boolean;
+  carbs?: number; // Total carbohydrates in grams
+  sugars?: number; // Sugars in grams (subset of carbs)
+  protein?: number; // Protein in grams
+  fat?: number; // Fat in grams
 }
 
 // Meal structure (breakfast, lunch, snack, dinner)
@@ -18,6 +26,7 @@ export interface DayDiet {
     lunch?: FoodItem[];
     snack?: FoodItem[];
     dinner?: FoodItem[];
+    [mealType: string]: FoodItem[] | undefined;
   };
   totalCalories?: number;
 }
@@ -55,11 +64,14 @@ export interface FoodReference {
 
 // Complete diet data structure
 export interface DietData {
+  id?: string; // Database ID for the diet plan
   days: {
     [key: string]: DayDiet;
   };
-  nutritionalInfo: NutritionalInfo;
-  foodReference: FoodReference;
+  planName?: string;
+  planDescription?: string;
+  nutritionalInfo?: NutritionalInfo;
+  foodReference?: FoodReference;
 }
 
 // User profile

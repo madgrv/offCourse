@@ -28,7 +28,7 @@ export function Navigation() {
       setUser(null);
       router.push('/auth/login');
     } catch (error) {
-      console.error('Error signing out:', error);
+      
     }
   };
 

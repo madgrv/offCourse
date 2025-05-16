@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DashboardLayout from './components/layout/DashboardLayout';
+import DietPlanSelector from './components/custom/DietPlanSelector';
 import en from '@/shared/language/en';
 import { createClient } from '@supabase/supabase-js';
 
@@ -66,37 +67,10 @@ export default function Home() {
             {en.trackDietIntro}
           </p>
 
-          {/* Diet Plan Selector UI for choosing a template */}
+          {/* Diet Plan Selector UI for choosing a template - now using shadcn-styled component */}
           <div className="bg-card p-6 rounded-lg shadow-md mt-8">
             <h2 className="text-2xl font-semibold mb-4">{en.selectDietPlan}</h2>
-            {loading ? (
-              <p>{en.loading}</p>
-            ) : error ? (
-              <p className="text-red-600">{error}</p>
-            ) : (
-              <>
-                <select
-                  className="border rounded px-3 py-2 mb-4 w-full"
-                  value={selected || ''}
-                  onChange={e => setSelected(e.target.value)}
-                  aria-label={en.chooseDietPlan}
-                >
-                  <option value="">{en.chooseDietPlan}</option>
-                  {templates.map(plan => (
-                    <option key={plan.id} value={plan.id}>
-                      {plan.name}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
-                  onClick={handleSelect}
-                  disabled={!selected || cloning}
-                >
-                  {cloning ? en.cloning : en.useThisPlan}
-                </button>
-              </>
-            )}
+            <DietPlanSelector onPlanSelected={() => { window.location.href = '/diet-plan'; }} />
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
