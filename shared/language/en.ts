@@ -4,6 +4,23 @@
 const en = {
   // --- Diet Plan Page ---
   dietPlan: {
+    // Localised day names for UI tabs and headings
+    monday: 'Monday',
+    tuesday: 'Tuesday',
+    wednesday: 'Wednesday',
+    thursday: 'Thursday',
+    friday: 'Friday',
+    saturday: 'Saturday',
+    sunday: 'Sunday',
+    // Error messages
+    errorUpdatingFoodItem: "There was an error updating the food item.",
+    errorInsertingFoodItem: "There was an error adding a new food item.",
+    errorUpdatingMealCompletion: "There was an error updating meal completion status.",
+    errorUpdatingFoodCompletion: "There was an error updating food completion status.",
+    waitingForData: "Please wait while your diet plan data is loading...",
+    missingData: "Unable to perform this action. Your diet plan or user data is not available.",
+    actionInProgress: "This action is already in progress. Please wait...",
+    // Titles and descriptions
     defaultTitle: 'Weekly Diet Plan',
     defaultDescription: 'Your personalised nutrition plan',
     noMealsPlanned: 'No meals planned for this day',
