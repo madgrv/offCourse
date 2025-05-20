@@ -1,10 +1,17 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useCallback,
+} from 'react';
 import { DietData } from '@/app/lib/types';
 import { getDietData } from '@/app/lib/data';
+import { useAuth } from './auth-context';
 
-// Define the context type
 interface DietPlanContextType {
   dietPlan: DietData | null;
   loading: boolean;
@@ -12,7 +19,6 @@ interface DietPlanContextType {
   refreshDietPlan: () => Promise<void>;
 }
 
-// Create the context with default values
 const DietPlanContext = createContext<DietPlanContextType>({
   dietPlan: null,
   loading: true,
@@ -20,43 +26,47 @@ const DietPlanContext = createContext<DietPlanContextType>({
   refreshDietPlan: async () => {},
 });
 
-// Custom hook to use the diet plan context
 export const useDietPlan = () => useContext(DietPlanContext);
 
-// Provider component
 export function DietPlanProvider({ children }: { children: ReactNode }) {
   const [dietPlan, setDietPlan] = useState<DietData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
-  // Function to fetch diet plan data
-  const fetchDietPlan = async () => {
+  const fetchDietPlan = useCallback(async () => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
       const data = await getDietData();
-      
       setDietPlan(data);
     } catch (err) {
-      
-      setError('Failed to load diet plan data');
+      console.error('Error in fetchDietPlan:', err);
+      setError(
+        err instanceof Error ? err.message : 'Failed to load diet plan data'
+      );
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
-  // Fetch diet plan on mount
   useEffect(() => {
     fetchDietPlan();
-  }, []);
+  }, [user, fetchDietPlan]);
 
-  // Function to refresh diet plan data
   const refreshDietPlan = async () => {
     await fetchDietPlan();
   };
 
   return (
-    <DietPlanContext.Provider value={{ dietPlan, loading, error, refreshDietPlan }}>
+    <DietPlanContext.Provider
+      value={{ dietPlan, loading, error, refreshDietPlan }}
+    >
       {children}
     </DietPlanContext.Provider>
   );
