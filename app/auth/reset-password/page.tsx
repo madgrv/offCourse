@@ -38,19 +38,20 @@ export default function ResetPasswordPage() {
   const [hashPresent, setHashPresent] = useState(false);
 
   useEffect(() => {
-    // Extract the access token from the URL hash
+    // Extract the token from the URL hash or query parameters
     const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get('access_token');
-    const email = params.get('email') || '';
-    const token = params.get('token') || '';
-    const type = params.get('type');
+    const searchParams = new URLSearchParams(hash || window.location.search);
+    
+    const accessToken = searchParams.get('access_token');
+    const email = searchParams.get('email') || '';
+    const token = searchParams.get('token') || accessToken || '';
+    const type = searchParams.get('type');
 
-    setHashPresent(!!accessToken && type === 'recovery');
+    setHashPresent(!!token);
     setToken(token);
     setEmail(email);
 
-    if (!accessToken || type !== 'recovery') {
+    if (!token) {
       setError(en.invalidResetLink);
     }
   }, []);
@@ -74,15 +75,15 @@ export default function ResetPasswordPage() {
     try {
       const supabase = createSupabaseClient();
       
-      // First verify the OTP token
-      const { error: verifyError } = await supabase.auth.verifyOtp({
+      // First update the session using the token
+      const { data: { user }, error: authError } = await supabase.auth.verifyOtp({
         email,
         token,
         type: 'recovery',
       });
 
-      if (verifyError) {
-        throw verifyError;
+      if (authError || !user) {
+        throw authError || new Error('Failed to authenticate with the provided token');
       }
 
       // Then update the password
