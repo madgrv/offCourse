@@ -26,12 +26,11 @@ export default function ForgotPasswordPage() {
       
       // Use environment variable for site URL or fall back to localhost for development
       const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-      const redirectTo = new URL(`${siteUrl}/auth/reset-password`);
-      redirectTo.searchParams.set('email', email);
+      const redirectTo = `${siteUrl}/auth/reset-password`;
       
       // This will send an email with a reset link containing the token
       const response = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: redirectTo.toString(),
+        redirectTo: redirectTo,
       });
       
       if (response.error) {

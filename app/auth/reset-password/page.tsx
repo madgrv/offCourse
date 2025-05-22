@@ -33,24 +33,30 @@ export default function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
   const [hashPresent, setHashPresent] = useState(false);
 
   useEffect(() => {
-    // Extract the token from the URL hash or query parameters
+    // Extract the token from the URL hash
     const hash = window.location.hash.substring(1);
-    const searchParams = new URLSearchParams(hash || window.location.search);
-    
-    // Get the token from either the hash or query parameters
-    const token = searchParams.get('token') || searchParams.get('access_token') || '';
-    
-    setHashPresent(!!token);
-    setToken(token);
+
+    if (!hash) {
+      setError(en.invalidResetLink);
+      return;
+    }
+
+    // The hash contains the access token from Supabase
+    // Format: #access_token=xxx&token_type=bearer&type=recovery
+    const params = new URLSearchParams(hash);
+    const token = params.get('access_token');
 
     if (!token) {
       setError(en.invalidResetLink);
+      return;
     }
+
+    setHashPresent(true);
+    setToken(token);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,18 +77,21 @@ export default function ResetPasswordPage() {
 
     try {
       const supabase = createSupabaseClient();
-      
-      // Verify the OTP token
-      const { error: verifyError } = await supabase.auth.verifyOtp({
-        token_hash: token,
-        type: 'recovery'
+
+      // First, set the session using the access token
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.setSession({
+        access_token: token,
+        refresh_token: '',
       });
 
-      if (verifyError) {
-        throw verifyError;
+      if (sessionError || !session) {
+        throw sessionError || new Error('Failed to create session');
       }
 
-      // Update the password
+      // Then update the password
       const { error: updateError } = await supabase.auth.updateUser({
         password: password,
       });
