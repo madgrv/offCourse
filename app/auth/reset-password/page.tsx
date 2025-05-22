@@ -18,12 +18,7 @@ import en from '@/shared/language/en';
 const createSupabaseClient = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  return createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  });
+  return createClient(supabaseUrl, supabaseAnonKey);
 };
 
 export default function ResetPasswordPage() {
@@ -37,26 +32,13 @@ export default function ResetPasswordPage() {
   const [hashPresent, setHashPresent] = useState(false);
 
   useEffect(() => {
-    // Extract the token from the URL hash
-    const hash = window.location.hash.substring(1);
-
-    if (!hash) {
+    // Check if we have a hash fragment (this indicates a password reset link)
+    const hasHash = window.location.hash.length > 0;
+    setHashPresent(hasHash);
+    
+    if (!hasHash) {
       setError(en.invalidResetLink);
-      return;
     }
-
-    // The hash contains the access token from Supabase
-    // Format: #access_token=xxx&token_type=bearer&type=recovery
-    const params = new URLSearchParams(hash);
-    const token = params.get('access_token');
-
-    if (!token) {
-      setError(en.invalidResetLink);
-      return;
-    }
-
-    setHashPresent(true);
-    setToken(token);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,27 +59,15 @@ export default function ResetPasswordPage() {
 
     try {
       const supabase = createSupabaseClient();
-
-      // First, set the session using the access token
-      const {
-        data: { session },
-        error: sessionError,
-      } = await supabase.auth.setSession({
-        access_token: token,
-        refresh_token: '',
+      
+      // Update the user's password
+      // The hash in the URL contains the necessary authentication information
+      const { error } = await supabase.auth.updateUser({
+        password: password
       });
-
-      if (sessionError || !session) {
-        throw sessionError || new Error('Failed to create session');
-      }
-
-      // Then update the password
-      const { error: updateError } = await supabase.auth.updateUser({
-        password: password,
-      });
-
-      if (updateError) {
-        throw updateError;
+      
+      if (error) {
+        throw error;
       }
 
       setSuccess(en.passwordResetSuccess);
