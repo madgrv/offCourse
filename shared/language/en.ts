@@ -94,7 +94,6 @@ const en = {
   mealCompleted: 'Meal completed',
   adjustMeal: 'Adjust meal',
   caloriesEaten: 'Calories',
-  passwordsDoNotMatch: 'Passwords do not match',
   registrationSuccess: 'Registration successful! Please check your email to verify your account.',
   loginSuccess: 'Login successful! Redirecting...',
   logout: 'Logout',
