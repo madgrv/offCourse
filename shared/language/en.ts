@@ -34,6 +34,12 @@ const en = {
   clonePartialSuccess: 'Plan cloned with some errors. See details.',
   cloneServerError: 'A server error occurred while cloning the plan.',
   cloneInvalidRequest: 'Invalid request format.',
+  noAccessToken: 'No access token available, user may not be authenticated.',
+  signInRequired: 'You need to be signed in to clone a diet plan.',
+  statusLabel: 'Status:',
+  noTemplatesFound: 'No templates found',
+  templatesAvailable: 'templates available',
+  signInToUseTemplate: 'Please sign in to use this template',
   // --- Auth & Login ---
   password: 'Password',
   forgotPassword: 'Forgot password?',
@@ -76,7 +82,34 @@ const en = {
   loading: 'Loading…',
   failedToFetchTemplates: 'Failed to fetch diet templates.',
   cloneFailed: 'Failed to clone diet plan.',
-  trackDietIntro: 'Track your diet and nutrition with this interactive application.'
+  trackDietIntro: 'Track your diet and nutrition with this interactive application.',
+  // --- Home Page ---
+  home: {
+    title: 'Teo\'s Diet App',
+    userProfile: 'User Profile',
+    accountInfo: 'Your account information',
+    signedIn: 'Signed in',
+    notSignedIn: 'Not signed in (required to use templates)',
+    emailLabel: 'Email:',
+    signIn: 'Sign In',
+    editProfile: 'Edit Profile',
+    selectTemplateDesc: 'Choose a template to get started',
+    calorieTracking: 'Calorie Tracking',
+    calorySummary: 'Your daily calorie summary',
+    caloriePreview: 'Calorie tracking preview',
+    viewAnalytics: 'View Analytics',
+    macronutrients: 'Macronutrients',
+    macroDesc: 'Protein, carbs and fat breakdown',
+    macroPreview: 'Macronutrients preview',
+    viewDetails: 'View Details',
+    goalCompletion: 'Goal Completion',
+    goalDesc: 'Your progress towards nutrition goals',
+    goalPreview: 'Goal completion preview',
+    daysLeft: 'Days Left',
+    daysDesc: 'Time remaining in your plan',
+    daysPreview: 'Days left preview',
+    viewProgress: 'View Progress'
+  }
 };
 
 export default en;

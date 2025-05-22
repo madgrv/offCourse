@@ -10,7 +10,7 @@ import {
   TabsContent,
 } from '@/app/components/ui/tabs';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import { MealCard } from '@/app/components/custom/meal-card';
+import { MealCard } from '@/app/components/custom/MealCard';
 import ProtectedRoute from '@/app/components/auth/ProtectedRoute';
 import DashboardLayout from '@/app/components/layout/DashboardLayout';
 import { getCurrentDay } from '@/app/lib/getCurrentDay';
