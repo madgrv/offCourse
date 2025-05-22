@@ -1,9 +1,7 @@
 'use client';
 
-'use client';
-
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Card,
@@ -20,17 +18,17 @@ import en from '@/shared/language/en';
 const createSupabaseClient = (accessToken: string) => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  
+
   return createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       autoRefreshToken: false,
-      persistSession: false
+      persistSession: false,
     },
     global: {
       headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
   });
 };
 
@@ -49,7 +47,7 @@ export default function ResetPasswordPage() {
     const hash = window.location.hash.substring(1); // Remove the '#'
     const params = new URLSearchParams(hash);
     const token = params.get('access_token');
-    
+
     setHashPresent(!!token);
     setAccessToken(token);
 
@@ -82,7 +80,7 @@ export default function ResetPasswordPage() {
     try {
       // Create a new client with the access token
       const supabaseClient = createSupabaseClient(accessToken);
-      
+
       // Update the password
       const { error } = await supabaseClient.auth.updateUser({
         password: password,
