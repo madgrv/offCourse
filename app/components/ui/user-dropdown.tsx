@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
+import Link from "next/link";
 
 interface UserDropdownProps {
   name?: string;
@@ -42,8 +43,16 @@ export function UserDropdown({ name, email, onLogout }: UserDropdownProps) {
       </button>
       {open && (
         <div className="absolute right-0 mt-2 w-40 bg-popover border border-border rounded shadow-lg z-50">
-          <button
+          <Link 
+            href="/profile"
             className="block w-full text-left px-4 py-2 text-sm hover:bg-accent"
+            onClick={() => setOpen(false)}
+          >
+            Profile
+          </Link>
+          <div className="border-t border-border"></div>
+          <button
+            className="block w-full text-left px-4 py-2 text-sm hover:bg-accent text-destructive"
             onClick={() => {
               setOpen(false);
               onLogout();
@@ -52,7 +61,6 @@ export function UserDropdown({ name, email, onLogout }: UserDropdownProps) {
           >
             Logout
           </button>
-          {/* Future: Add settings/profile links here */}
         </div>
       )}
     </div>
