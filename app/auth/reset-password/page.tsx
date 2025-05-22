@@ -42,14 +42,11 @@ export default function ResetPasswordPage() {
     const hash = window.location.hash.substring(1);
     const searchParams = new URLSearchParams(hash || window.location.search);
     
-    const accessToken = searchParams.get('access_token');
-    const email = searchParams.get('email') || '';
-    const token = searchParams.get('token') || accessToken || '';
-    const type = searchParams.get('type');
-
+    // Get the token from either the hash or query parameters
+    const token = searchParams.get('token') || searchParams.get('access_token') || '';
+    
     setHashPresent(!!token);
     setToken(token);
-    setEmail(email);
 
     if (!token) {
       setError(en.invalidResetLink);
@@ -75,18 +72,17 @@ export default function ResetPasswordPage() {
     try {
       const supabase = createSupabaseClient();
       
-      // First update the session using the token
-      const { data: { user }, error: authError } = await supabase.auth.verifyOtp({
-        email,
-        token,
-        type: 'recovery',
+      // Verify the OTP token
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        token_hash: token,
+        type: 'recovery'
       });
 
-      if (authError || !user) {
-        throw authError || new Error('Failed to authenticate with the provided token');
+      if (verifyError) {
+        throw verifyError;
       }
 
-      // Then update the password
+      // Update the password
       const { error: updateError } = await supabase.auth.updateUser({
         password: password,
       });
