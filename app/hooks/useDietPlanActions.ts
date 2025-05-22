@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDietPlan } from '../context/DietPlanContext';
-import { useUser } from '../context/UserContext';
+import { useAuth } from '../context/auth-context';
 import * as dietPlanApi from '../api/dietPlanApi';
 import { FoodItem } from '../lib/types';
 import en from '@/shared/language/en';
@@ -12,7 +12,7 @@ export function useDietPlanActions() {
   const [actionErrors, setActionErrors] = useState<Record<string, string>>({});
 
   const { dietPlan, loading: dietPlanLoading, refreshDietPlan } = useDietPlan();
-  const { user, loading: userLoading } = useUser();
+  const { user, loading: userLoading } = useAuth();
 
   useEffect(() => {
     if (dietPlan && user) {

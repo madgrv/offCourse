@@ -1,7 +1,7 @@
 'use client';
 
 import { useDietPlan } from '@/app/context/DietPlanContext';
-import { useUser } from '@/app/context/UserContext';
+import { useAuth } from '@/app/context/auth-context';
 import { useDietPlanActions } from '@/app/hooks/useDietPlanActions';
 import {
   Tabs,
@@ -28,7 +28,7 @@ export default function DietPlanPage() {
   ];
 
   const { dietPlan, loading: dietPlanLoading } = useDietPlan();
-  const { user } = useUser();
+  const { user } = useAuth();
   const {
     editingMeals,
     isProcessing,

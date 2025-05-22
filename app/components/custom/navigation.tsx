@@ -18,17 +18,19 @@ export function Navigation() {
   const router = useRouter();
   // State to store logged-in user
   // Use global auth context for user state
-  const { user, setUser } = useAuth();
+  const { user, signOut } = useAuth();
   // State to track logout in progress
   const [loggingOut, setLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
-      setUser(null);
+      setLoggingOut(true);
+      await signOut();
       router.push('/auth/login');
     } catch (error) {
-      
+      console.error('Logout error:', error);
+    } finally {
+      setLoggingOut(false);
     }
   };
 
@@ -94,8 +96,8 @@ export function Navigation() {
               {user && (
                 <div className='hidden md:flex items-center'>
                   <UserDropdown
-                    name={user.name}
-                    email={user.email}
+                    name={user.email?.split('@')[0] || 'User'}
+                    email={user.email || ''}
                     onLogout={handleLogout}
                   />
                 </div>
@@ -126,7 +128,7 @@ export function Navigation() {
             {user && (
               <div className='flex items-center justify-center space-x-3 mt-2'>
                 <span className='text-sm font-medium text-foreground'>
-                  {user.name ? user.name : user.email}
+                  {user.email?.split('@')[0] || 'User'}
                 </span>
                 <button
                   onClick={handleLogout}
