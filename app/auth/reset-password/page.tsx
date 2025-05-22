@@ -1,7 +1,9 @@
 'use client';
 
+'use client';
+
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   Card,
@@ -11,8 +13,26 @@ import {
   CardFooter,
 } from '@/app/components/ui/card';
 import { Button } from '@/app/components/ui/button';
-import { supabase } from '@/app/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 import en from '@/shared/language/en';
+
+// Create a new Supabase client with the access token
+const createSupabaseClient = (accessToken: string) => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    },
+    global: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+  });
+};
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -21,13 +41,19 @@ export default function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [hashPresent, setHashPresent] = useState(false);
 
   useEffect(() => {
-    const hash = window.location.hash;
-    setHashPresent(!!hash);
+    // Extract the access token from the URL hash
+    const hash = window.location.hash.substring(1); // Remove the '#'
+    const params = new URLSearchParams(hash);
+    const token = params.get('access_token');
+    
+    setHashPresent(!!token);
+    setAccessToken(token);
 
-    if (!hash) {
+    if (!token) {
       setError(en.invalidResetLink);
     }
   }, []);
@@ -48,8 +74,19 @@ export default function ResetPasswordPage() {
 
     setIsLoading(true);
 
+    if (!accessToken) {
+      setError(en.invalidResetLink);
+      return;
+    }
+
     try {
-      const { error } = await supabase.auth.updateUser({ password });
+      // Create a new client with the access token
+      const supabaseClient = createSupabaseClient(accessToken);
+      
+      // Update the password
+      const { error } = await supabaseClient.auth.updateUser({
+        password: password,
+      });
 
       if (error) {
         throw error;
@@ -57,6 +94,7 @@ export default function ResetPasswordPage() {
 
       setSuccess(en.passwordResetSuccess);
 
+      // Redirect to login after a short delay
       setTimeout(() => {
         router.push('/auth/login');
       }, 2000);
