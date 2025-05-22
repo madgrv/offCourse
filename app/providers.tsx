@@ -7,6 +7,8 @@ import { UserProvider } from '@/app/context/UserContext';
 import { DietPlanProvider } from '@/app/context/DietPlanContext';
 
 // Providers wraps the app with ThemeProvider, AuthProvider, UserProvider, and DietPlanProvider for global state
+// Note: UserProvider is now a compatibility layer that uses AuthProvider under the hood.
+// This allows for gradual migration from UserContext to the enhanced AuthContext.
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NextThemesProvider attribute='class' defaultTheme='system' enableSystem>

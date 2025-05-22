@@ -1,14 +1,14 @@
 // UserContext.tsx
-// Provides user authentication state and actions throughout the app.
-// This context wraps the useSupabaseUser hook for modularity and clarity.
-// Use this context to access user info, loading, error, and auth actions in any component.
+// DEPRECATED: This context is maintained for backward compatibility.
+// New components should use the enhanced auth-context.tsx directly.
+// Why: We are consolidating user and auth state into a single source of truth.
 
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useSupabaseUser } from '../hooks/useSupabaseUser';
+import { useAuth } from './auth-context';
 
-// Define the shape of the context value for clarity and type safety.
+// Maintain the same interface for backward compatibility
 interface UserContextValue {
-  user: any; // Replace 'any' with your actual user type if available
+  user: any; // Will contain the full Supabase user object
   loading: boolean;
   error: string | null;
   signIn: () => Promise<void>;
@@ -17,9 +17,10 @@ interface UserContextValue {
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
+// This provider now wraps the enhanced auth context instead of useSupabaseUser
 export function UserProvider({ children }: { children: ReactNode }) {
-  // Delegate logic to the modular hook
-  const { user, loading, error, signIn, signOut } = useSupabaseUser();
+  // Use the enhanced auth context directly
+  const { user, loading, error, signIn, signOut } = useAuth();
 
   return (
     <UserContext.Provider value={{ user, loading, error, signIn, signOut }}>
@@ -28,7 +29,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Custom hook for consuming the user context
+// This hook now returns the same data as useAuth, maintaining compatibility
 export function useUser() {
   const ctx = useContext(UserContext);
   if (!ctx) {
@@ -37,4 +38,6 @@ export function useUser() {
   return ctx;
 }
 
-// Why: Centralises user/auth state for easy access and avoids prop drilling. Use this context instead of calling the auth hook directly in deeply nested components.
+// Why: This compatibility layer allows for gradual migration from UserContext to AuthContext
+// without breaking existing components. Once all components have been updated to use
+// useAuth directly, this file can be removed.

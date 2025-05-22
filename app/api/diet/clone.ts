@@ -24,9 +24,9 @@ export async function POST(req: NextRequest) {
     try {
       const body = await req.json();
       templateId = body.templateId;
-      console.log('Received template ID:', templateId);
+
     } catch (parseError) {
-      console.error('JSON parsing error:', parseError);
+
       return NextResponse.json({ 
         success: false, 
         error: `${en.cloneInvalidRequest}: Invalid JSON in request body` 

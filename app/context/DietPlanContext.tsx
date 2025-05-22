@@ -32,7 +32,8 @@ export function DietPlanProvider({ children }: { children: ReactNode }) {
   const [dietPlan, setDietPlan] = useState<DietData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
+  // Use the enhanced auth context which provides the full user object with ID
+  const { user, loading: authLoading } = useAuth();
 
   const fetchDietPlan = useCallback(async () => {
     if (!user) {

@@ -160,7 +160,7 @@ export function MealCard({
             {/* Meal title */}
             <span className='text-lg font-medium'>{title}</span>
           </div>
-          
+
           {/* Meal calories */}
           {totalCalories !== undefined && (
             <span className='text-sm font-normal bg-secondary px-2 py-1 rounded-md'>
@@ -168,7 +168,7 @@ export function MealCard({
             </span>
           )}
         </CardTitle>
-        
+
         {/* Meal completion checkbox */}
         {onComplete && (
           <div className='flex items-center gap-2 mt-2'>
@@ -185,7 +185,7 @@ export function MealCard({
             >
               {en.markAsCompleted}
               {isLoading.mealComplete && (
-                <Loader2 className="h-3 w-3 ml-1 inline animate-spin" />
+                <Loader2 className='h-3 w-3 ml-1 inline animate-spin' />
               )}
             </Label>
           </div>
@@ -194,7 +194,7 @@ export function MealCard({
       <CardContent className='pt-0'>
         {/* Error messages */}
         {(errors.save || errors.mealComplete || errors.foodComplete) && (
-          <div className="mb-3 p-2 border border-red-200 bg-red-50 rounded-md text-red-600 text-sm">
+          <div className='mb-3 p-2 border border-red-200 bg-red-50 rounded-md text-red-600 text-sm'>
             {errors.save || errors.mealComplete || errors.foodComplete}
           </div>
         )}
@@ -386,7 +386,7 @@ export function MealCard({
                       aria-label={`${en.markAsCompleted}: ${item.food}`}
                     />
                     {isLoading.foodComplete && (
-                      <Loader2 className="h-3 w-3 ml-1 animate-spin text-muted-foreground" />
+                      <Loader2 className='h-3 w-3 ml-1 animate-spin text-muted-foreground' />
                     )}
                     <Label
                       htmlFor={`food-item-${index}`}
@@ -506,7 +506,11 @@ export function MealCard({
                 size='sm'
                 onClick={() => onEdit?.()}
                 className='flex items-center'
-                disabled={isLoading.save || isLoading.mealComplete || isLoading.foodComplete}
+                disabled={
+                  isLoading.save ||
+                  isLoading.mealComplete ||
+                  isLoading.foodComplete
+                }
               >
                 <Edit className='h-4 w-4 mr-1' />
                 {en.editMeal}

@@ -109,7 +109,7 @@ export default function DietPlanSelector({
         .eq('is_template', true)
         .single();
       
-      console.log('Template check:', { templateCheck, templateCheckError });
+
       
       if (templateCheckError) {
         console.error('Error checking template:', templateCheckError);
@@ -121,7 +121,7 @@ export default function DietPlanSelector({
       // Now attempt to clone it
       // Ensure the template ID is properly formatted
       const templateIdToSend = selected.trim();
-      console.log('Sending template ID:', templateIdToSend);
+
       
       // Get the current session and access token
       const { data: sessionData } = await supabase.auth.getSession();
@@ -134,7 +134,7 @@ export default function DietPlanSelector({
         return;
       }
       
-      console.log('Using access token:', accessToken ? 'Present (length: ' + accessToken.length + ')' : 'None');
+
       
       const res = await fetch('/api/diet/clone', {
         method: 'POST',
@@ -147,11 +147,11 @@ export default function DietPlanSelector({
       });
       
       // Log the raw response
-      console.log('Clone API response status:', res.status);
+
       
       // Parse the JSON response
       const result = await res.json();
-      console.log('Clone result:', result);
+
       
       if (!result.success) {
         
