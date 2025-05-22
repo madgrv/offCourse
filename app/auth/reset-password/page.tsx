@@ -14,20 +14,14 @@ import { Button } from '@/app/components/ui/button';
 import { createClient } from '@supabase/supabase-js';
 import en from '@/shared/language/en';
 
-// Create a new Supabase client with the access token
-const createSupabaseClient = (accessToken: string) => {
+// Create a new Supabase client
+const createSupabaseClient = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
   return createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
-    },
-    global: {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
     },
   });
 };
@@ -39,19 +33,24 @@ export default function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [email, setEmail] = useState('');
+  const [token, setToken] = useState('');
   const [hashPresent, setHashPresent] = useState(false);
 
   useEffect(() => {
     // Extract the access token from the URL hash
-    const hash = window.location.hash.substring(1); // Remove the '#'
+    const hash = window.location.hash.substring(1);
     const params = new URLSearchParams(hash);
-    const token = params.get('access_token');
+    const accessToken = params.get('access_token');
+    const email = params.get('email') || '';
+    const token = params.get('token') || '';
+    const type = params.get('type');
 
-    setHashPresent(!!token);
-    setAccessToken(token);
+    setHashPresent(!!accessToken && type === 'recovery');
+    setToken(token);
+    setEmail(email);
 
-    if (!token) {
+    if (!accessToken || type !== 'recovery') {
       setError(en.invalidResetLink);
     }
   }, []);
@@ -72,22 +71,27 @@ export default function ResetPasswordPage() {
 
     setIsLoading(true);
 
-    if (!accessToken) {
-      setError(en.invalidResetLink);
-      return;
-    }
-
     try {
-      // Create a new client with the access token
-      const supabaseClient = createSupabaseClient(accessToken);
+      const supabase = createSupabaseClient();
+      
+      // First verify the OTP token
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'recovery',
+      });
 
-      // Update the password
-      const { error } = await supabaseClient.auth.updateUser({
+      if (verifyError) {
+        throw verifyError;
+      }
+
+      // Then update the password
+      const { error: updateError } = await supabase.auth.updateUser({
         password: password,
       });
 
-      if (error) {
-        throw error;
+      if (updateError) {
+        throw updateError;
       }
 
       setSuccess(en.passwordResetSuccess);
