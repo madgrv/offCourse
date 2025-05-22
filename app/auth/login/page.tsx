@@ -9,12 +9,6 @@ import { supabase } from "@/app/lib/supabaseClient";
 import en from "@/shared/language/en";
 
 export default function LoginPage() {
-  // --- Forgot Password State ---
-  const [showReset, setShowReset] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
-  const [resetMessage, setResetMessage] = useState("");
-  const [resetError, setResetError] = useState("");
-  const [resetLoading, setResetLoading] = useState(false);
 
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -53,7 +47,7 @@ export default function LoginPage() {
     <div className="container mx-auto flex items-center justify-center min-h-[80vh] px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Login to Teo&apos;s Diet App</CardTitle>
+          <CardTitle className="text-2xl text-center">{en.loginToApp}</CardTitle>
         </CardHeader>
         <CardContent>
           {/* Show error or success messages to the user */}
@@ -94,73 +88,28 @@ export default function LoginPage() {
                   suppressHydrationWarning
                 />
               </div>
-              {/* Forgot Password Link - shows inline reset form */}
-              <button
-                type="button"
-                className="text-xs text-primary hover:underline mt-1"
-                onClick={() => setShowReset(true)}
-                aria-label={en.forgotPassword}
+              {/* Forgot Password Link - redirects to dedicated page */}
+              <Link 
+                href="/auth/forgot-password" 
+                className="text-xs text-primary hover:underline mt-1 block"
               >
                 {en.forgotPassword}
-              </button>
-              {showReset && (
-                <form
-                  className="mt-2 flex flex-col gap-2"
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    setResetMessage("");
-                    setResetError("");
-                    setResetLoading(true);
-                    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail);
-                    setResetLoading(false);
-                    if (error) {
-                      setResetError(error.message);
-                    } else {
-                      setResetMessage(en.resetEmailSent);
-                    }
-                  }}
-                >
-                  <input
-                    type="email"
-                    required
-                    value={resetEmail}
-                    onChange={e => setResetEmail(e.target.value)}
-                    className="w-full px-2 py-1 border rounded bg-background text-sm"
-                    placeholder={en.email}
-                  />
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={resetLoading}
-                  >
-                    {resetLoading ? en.sending : en.sendResetLink}
-                  </Button>
-                  {resetMessage && <div className="text-green-600 text-xs">{resetMessage}</div>}
-                  {resetError && <div className="text-red-600 text-xs">{resetError}</div>}
-                  <button
-                    type="button"
-                    className="text-xs underline text-muted-foreground mt-1"
-                    onClick={() => setShowReset(false)}
-                  >
-                    {en.cancel}
-                  </button>
-                </form>
-              )}
+              </Link>
             </div>
             <Button 
               type="submit" 
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? "Logging in..." : "Login"}
+              {isLoading ? en.loggingIn : en.loginButton}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
+            {en.dontHaveAccount}{" "}
             <Link href="/auth/register" className="text-primary hover:underline">
-              Register
+              {en.register}
             </Link>
           </p>
         </CardFooter>
