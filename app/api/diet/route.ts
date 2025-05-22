@@ -30,7 +30,7 @@ export async function POST(request: Request): Promise<NextResponse<ApiResponse<{
     const body = await request.json();
     
     // In a real application, this would validate and save the data
-    console.log('Received data update request:', body);
+    
     
     // This is just a placeholder response
     return NextResponse.json({
@@ -38,7 +38,7 @@ export async function POST(request: Request): Promise<NextResponse<ApiResponse<{
       data: { message: 'Diet data updated successfully' }
     });
   } catch (error) {
-    console.error('Error updating diet data:', error);
+    
     
     return NextResponse.json(
       {

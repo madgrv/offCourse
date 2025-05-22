@@ -27,7 +27,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
         if (error) {
           // Don't log expected auth session missing errors
           if (!error.message.includes('Auth session missing') && !isAuthPage) {
-            console.error('Auth error:', error);
+            
           }
           
           setAuthState({ loading: false, isAuthenticated: false });
@@ -52,7 +52,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       } catch (error) {
         // Only log unexpected errors
         if (!isAuthPage) {
-          console.error('Authentication check failed:', error);
+          
         }
         
         setAuthState({ loading: false, isAuthenticated: false });

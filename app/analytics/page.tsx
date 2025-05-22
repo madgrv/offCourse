@@ -1,33 +1,31 @@
 "use client";
 
-import { getDietData } from "@/app/lib/data";
 import { Card, CardHeader, CardTitle, CardContent } from "@/app/components/ui/card";
-import { DietData } from "@/app/lib/types";
 
 import ProtectedRoute from "@/app/components/auth/ProtectedRoute";
 import DashboardLayout from "@/app/components/layout/DashboardLayout";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Skeleton } from "@/app/components/ui/skeleton";
+import { useDietPlan } from "@/app/context/DietPlanContext";
 
 export default function AnalyticsPage() {
-  // Days of the week
+  // Days of the week - use capitalized days to match our data structure
   const days = [
-    'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
+    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
   ];
 
-  // State for diet data and loading
-  const [dietData, setDietData] = useState<DietData | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Get diet plan data from context
+  const { dietPlan, loading, error } = useDietPlan();
 
+  // Log diet plan data for debugging
   useEffect(() => {
-    getDietData().then((data) => {
-      setDietData(data);
-      setLoading(false);
-    });
-  }, []);
+    if (dietPlan) {
+      
+    }
+  }, [dietPlan]);
 
   // Render loading skeleton while fetching
-  if (loading || !dietData) {
+  if (loading || !dietPlan) {
     return (
       <DashboardLayout>
         <div className="container mx-auto px-4 py-8">
@@ -41,12 +39,27 @@ export default function AnalyticsPage() {
       </DashboardLayout>
     );
   }
+  
+  // Show error state if there was a problem loading the diet plan
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold mb-6">Error Loading Analytics</h1>
+          <div className="p-6 bg-red-50 text-red-800 rounded-lg">
+            <p>{error}</p>
+            <p className="mt-2">Please try refreshing the page.</p>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   // Extract calorie data for each day
   const calorieData = days.map((day: string) => {
-    const dayData = dietData.days[day];
+    const dayData = dietPlan.days[day];
     return {
-      day: day.charAt(0).toUpperCase() + day.slice(1),
+      day, // Day is already capitalised
       calories: dayData?.totalCalories || 0
     };
   });
@@ -132,11 +145,15 @@ export default function AnalyticsPage() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span>Adult Male</span>
-                  <span className="font-medium">{dietData.nutritionalInfo.adultMale.recommendedDailyIntake} kcal</span>
+                  <span className="font-medium">
+                    {dietPlan.nutritionalInfo?.adultMale?.recommendedDailyIntake || 2500} kcal
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Adult Female</span>
-                  <span className="font-medium">{dietData.nutritionalInfo.adultFemale.recommendedDailyIntake} kcal</span>
+                  <span className="font-medium">
+                    {dietPlan.nutritionalInfo?.adultFemale?.recommendedDailyIntake || 2000} kcal
+                  </span>
                 </div>
               </div>
             </CardContent>
