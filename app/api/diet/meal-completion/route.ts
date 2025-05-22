@@ -2,29 +2,29 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import en from '../../../../shared/language/en';
 
-// Ensure environment variables are available
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-// Validate required environment variables
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Missing required environment variables for Supabase client');
-}
-
-// Create admin client with service role key to bypass RLS
-const supabaseAdmin = createClient(
-  supabaseUrl || '',
-  supabaseServiceKey || '',
-  {
+// Helper function to get Supabase admin client
+function getSupabaseAdmin() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!supabaseUrl || !supabaseServiceKey) {
+    console.error('Missing required environment variables for Supabase client');
+    throw new Error('Missing required environment variables for Supabase client');
+  }
+  
+  return createClient(supabaseUrl, supabaseServiceKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false
     }
-  }
-);
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
+    // Initialize Supabase client only when the route is called
+    const supabase = getSupabaseAdmin();
+    
     const body = await req.json();
     const { userId, dietPlanId, day, mealType, completed } = body;
     
@@ -34,7 +34,8 @@ export async function POST(req: NextRequest) {
         error: 'Missing required fields'
       }, { status: 400 });
     }
-    const { data: existingRecord } = await supabaseAdmin
+    
+    const { data: existingRecord } = await supabase
       .from('meal_completions')
       .select('*')
       .eq('user_id', userId)
@@ -46,8 +47,7 @@ export async function POST(req: NextRequest) {
     let completionError = null;
     
     if (existingRecord) {
-
-      const { error } = await supabaseAdmin
+      const { error } = await supabase
         .from('meal_completions')
         .update({
           completed,
@@ -60,8 +60,7 @@ export async function POST(req: NextRequest) {
       
       completionError = error;
     } else {
-
-      const { error } = await supabaseAdmin
+      const { error } = await supabase
         .from('meal_completions')
         .insert({
           user_id: userId,
