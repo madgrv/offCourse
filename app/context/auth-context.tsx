@@ -1,14 +1,15 @@
 'use client';
-// Enhanced AuthContext provides a comprehensive global authentication state for the app.
-// This consolidates user and auth state into a single source of truth.
-// Why: Eliminates synchronisation issues and reduces complexity by having one auth context.
 
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '@/app/lib/supabaseClient';
-import en from '@/shared/language/en';
 
-// Define a comprehensive auth context type
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -20,12 +21,10 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Store the complete Supabase user object (includes ID and all properties)
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch and set the current user
   const fetchUser = useCallback(async () => {
     setLoading(true);
     try {
@@ -41,31 +40,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Initial fetch on mount
     fetchUser();
 
-    // Listen to Supabase auth state changes for robust session handling
-    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      // Update user state when auth state changes
-      setUser(session?.user || null);
-      
-      // Clear error on successful auth events
-      if (session?.user) {
-        setError(null);
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user || null);
+        if (session?.user) {
+          setError(null);
+        }
       }
-    });
-    
+    );
+
     return () => {
       listener.subscription.unsubscribe();
     };
   }, [fetchUser]);
 
-  // Sign in function (customise as needed for your auth flow)
   const signIn = useCallback(async () => {
     setLoading(true);
     try {
-      // Example: redirect to sign-in page
-      // You may want to implement actual sign-in logic here
       window.location.href = '/auth/login';
     } catch (err: any) {
       setError(err.message || 'Sign-in failed');
@@ -74,7 +67,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Sign out function
   const signOut = useCallback(async () => {
     setLoading(true);
     try {
@@ -94,7 +86,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Custom hook for consuming the auth context
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -103,5 +94,4 @@ export function useAuth() {
   return context;
 }
 
-// Legacy type for backward compatibility during migration
 export type UserType = { email: string; name?: string; id?: string } | null;

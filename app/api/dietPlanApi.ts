@@ -1,6 +1,8 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import en from '@/shared/language/en';
 import { FoodItem } from '../lib/types';
+import { mutate } from 'swr';
+import { DIET_PLAN_CACHE_KEY } from '../hooks/useDietPlanData';
 
 const supabase = createClientComponentClient();
 
@@ -56,6 +58,8 @@ export async function saveMealFoodItems({
       }
     }
   }
+  // After save, revalidate diet plan cache
+  await mutate(DIET_PLAN_CACHE_KEY);
 }
 
 // Set completion status for a meal
@@ -98,7 +102,8 @@ export async function setMealCompletion({
         `${en.dietPlan.errorUpdatingMealCompletion}: ${result.error || 'Unknown error'}`
       );
     }
-    
+    // After update, revalidate diet plan cache
+    await mutate(DIET_PLAN_CACHE_KEY);
   } catch (error) {
     if (error instanceof Error) {
       throw error;
@@ -141,7 +146,8 @@ export async function setFoodItemCompletion({
         `${en.dietPlan.errorUpdatingFoodCompletion}: ${result.error || 'Unknown error'}`
       );
     }
-    
+    // After update, revalidate diet plan cache
+    await mutate(DIET_PLAN_CACHE_KEY);
   } catch (error) {
     if (error instanceof Error) {
       throw error;

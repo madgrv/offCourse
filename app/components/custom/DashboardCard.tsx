@@ -25,10 +25,6 @@ interface DashboardCardProps {
   };
 }
 
-/**
- * A standardised card component for dashboard displays
- * Provides consistent styling and structure while allowing flexible content
- */
 export function DashboardCard({
   title,
   description,
@@ -53,16 +49,16 @@ export function DashboardCard({
           ) : actionHref && actionLabel ? (
             <Link
               href={actionHref}
-              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 w-full"
+              className='inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 w-full'
             >
               {actionLabel}
             </Link>
           ) : null}
-          
+
           {secondaryAction && (
             <Link
               href={secondaryAction.href}
-              className="inline-flex items-center justify-center rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary/90 ml-2"
+              className='inline-flex items-center justify-center rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground hover:bg-secondary/90 ml-2'
             >
               {secondaryAction.label}
             </Link>
@@ -79,8 +75,8 @@ export function DashboardCard({
  */
 export function PlaceholderContent({ text }: { text: string }) {
   return (
-    <div className="h-40 flex items-center justify-center bg-muted/20 rounded-md">
-      <p className="text-muted-foreground">{text}</p>
+    <div className='h-40 flex items-center justify-center bg-muted/20 rounded-md'>
+      <p className='text-muted-foreground'>{text}</p>
     </div>
   );
 }

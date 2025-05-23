@@ -14,7 +14,6 @@ import { Button } from '@/app/components/ui/button';
 import { createClient } from '@supabase/supabase-js';
 import en from '@/shared/language/en';
 
-// Create a new Supabase client
 const createSupabaseClient = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -32,10 +31,9 @@ export default function ResetPasswordPage() {
   const [hashPresent, setHashPresent] = useState(false);
 
   useEffect(() => {
-    // Check if we have a hash fragment (this indicates a password reset link)
     const hasHash = window.location.hash.length > 0;
     setHashPresent(hasHash);
-    
+
     if (!hasHash) {
       setError(en.invalidResetLink);
     }
@@ -59,20 +57,17 @@ export default function ResetPasswordPage() {
 
     try {
       const supabase = createSupabaseClient();
-      
-      // Update the user's password
-      // The hash in the URL contains the necessary authentication information
+
       const { error } = await supabase.auth.updateUser({
-        password: password
+        password: password,
       });
-      
+
       if (error) {
         throw error;
       }
 
       setSuccess(en.passwordResetSuccess);
 
-      // Redirect to login after a short delay
       setTimeout(() => {
         router.push('/auth/login');
       }, 2000);
@@ -92,7 +87,6 @@ export default function ResetPasswordPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Show error or success messages to the user */}
           {error && <div className='text-red-600 mb-4'>{error}</div>}
           {success && <div className='text-green-600 mb-4'>{success}</div>}
 

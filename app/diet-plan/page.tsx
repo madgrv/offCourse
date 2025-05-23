@@ -38,6 +38,7 @@ export default function DietPlanPage() {
     handleSaveMeal,
     handleMealComplete,
     handleFoodItemComplete,
+    isCompletionInFlight,
   } = useDietPlanActions();
 
   // Combined loading state
@@ -114,10 +115,13 @@ export default function DietPlanPage() {
                 dietPlan.days[day].meals &&
                 Object.keys(dietPlan.days[day].meals).length > 0 ? (
                   ['breakfast', 'lunch', 'snack', 'dinner']
-                    .filter(mealType => dietPlan.days[day].meals[mealType])
-                    .map(mealType => {
+                    .filter((mealType) => dietPlan.days[day].meals[mealType])
+                    .map((mealType) => {
                       const mealData = dietPlan.days[day].meals[mealType] || [];
-                      return [mealType as string, mealData] as [string, typeof mealData];
+                      return [mealType as string, mealData] as [
+                        string,
+                        typeof mealData
+                      ];
                     })
                     .map(([mealType, meal]) => (
                       <div className='mb-2' key={mealType}>
@@ -125,6 +129,9 @@ export default function DietPlanPage() {
                           title={mealType}
                           foodItems={meal ?? []}
                           isEditing={editingMeals[`${day}-${mealType}`]}
+                          mealType={mealType}
+                          isCompletionInFlight={isCompletionInFlight}
+                          day={day}
                           isLoading={{
                             save:
                               isProcessing[`save-${day}-${mealType}`] || false,
@@ -169,8 +176,7 @@ export default function DietPlanPage() {
                           }
                         />
                       </div>
-                    )
-                  )
+                    ))
                 ) : (
                   <div className='text-gray-500 italic py-4'>
                     {en.dietPlan.noMealsPlanned}

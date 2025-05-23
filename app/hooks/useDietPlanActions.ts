@@ -1,9 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDietPlan } from '../context/DietPlanContext';
 import { useAuth } from '../context/auth-context';
 import * as dietPlanApi from '../api/dietPlanApi';
 import { FoodItem } from '../lib/types';
 import en from '@/shared/language/en';
+import { mutate } from 'swr';
+import { DIET_PLAN_CACHE_KEY } from './useDietPlanData';
 
 // Centralises all business logic and state for diet plan actions, making the page component declarative and easy to maintain.
 export function useDietPlanActions() {
@@ -79,10 +81,10 @@ export function useDietPlanActions() {
       const actionKey = `save-${day}-${mealType}`;
 
       if (isProcessing[actionKey]) {
-        setActionErrors((prev) => ({
-          ...prev,
-          [actionKey]: en.dietPlan.actionInProgress,
-        }));
+        // setActionErrors((prev) => ({
+        //   ...prev,
+        //   [actionKey]: en.dietPlan.actionInProgress,
+        // }));
         return;
       }
 
@@ -133,47 +135,69 @@ export function useDietPlanActions() {
     completed: boolean
   ) => Promise<void>;
 
+  // Tracks in-flight completion actions to prevent double-toggling the same item/meal
+  const inFlightCompletions = React.useRef<Set<string>>(new Set());
+
   const handleMealComplete: HandleMealCompleteType = useCallback(
     async (day: string, mealType: string, completed: boolean) => {
       const actionKey = `meal-complete-${day}-${mealType}`;
-
-      if (isProcessing[actionKey]) return;
+      // Prevent double-toggling the same meal while allowing other actions
+      if (inFlightCompletions.current.has(actionKey)) {
+        // Silently ignore double-toggling the same completion action
+        return;
+      }
       if (!checkRequiredData(actionKey)) return;
       setActionErrors((prev) => ({ ...prev, [actionKey]: '' }));
-      dietPlanApi
-        .setMealCompletion({
+      inFlightCompletions.current.add(actionKey);
+
+      // Optimistically update the SWR cache for immediate UI feedback
+      await mutate(
+        DIET_PLAN_CACHE_KEY,
+        (current: any) => {
+          if (!current) return current;
+          const updated = { ...current };
+          if (
+            updated.days &&
+            updated.days[day] &&
+            updated.days[day].meals &&
+            updated.days[day].meals[mealType]
+          ) {
+            // Update meal completion
+            updated.days[day].meals[mealType] = updated.days[day].meals[
+              mealType
+            ].map((item: FoodItem) => ({ ...item, completed }));
+            // Optionally, store a meal-level completion flag if your UI uses it
+            if (updated.days[day].mealCompletion) {
+              updated.days[day].mealCompletion[mealType] = completed;
+            }
+          }
+          return updated;
+        },
+        false // Do not revalidate yet
+      );
+
+      try {
+        await dietPlanApi.setMealCompletion({
           userId: user!.id as string,
           dietPlanId: dietPlan!.id as string,
           day,
           mealType,
           completed,
-        })
-        .catch((err) => {});
-
-      // Mark all food items as complete for consistency
-      if (dietPlan?.days[day]?.meals?.[mealType]) {
-        const foodItems = dietPlan.days[day].meals[mealType];
-
-        foodItems.forEach((foodItem) => {
-          if (!foodItem || !foodItem.id) return;
-
-          dietPlanApi
-            .setFoodItemCompletion({
-              userId: user!.id as string,
-              dietPlanId: dietPlan.id as string,
-              foodItemId: foodItem.id,
-              completed,
-            })
-            .catch((err) => {});
         });
+        // No need to revalidate here; API already does it after mutation
+      } catch (err) {
+        // Roll back optimistic update if server call fails
+        await mutate(DIET_PLAN_CACHE_KEY);
+        setActionErrors((prev) => ({
+          ...prev,
+          [actionKey]: en.dietPlan.errorUpdatingMealCompletion,
+        }));
+      } finally {
+        inFlightCompletions.current.delete(actionKey);
       }
-
-      // Short delay gives UI time to update before fetching new data
-      setTimeout(() => {
-        refreshDietPlan();
-      }, 500);
     },
-    [dietPlan, user, refreshDietPlan, isProcessing, checkRequiredData]
+
+    [dietPlan, user, checkRequiredData]
   );
 
   const handleFoodItemComplete: HandleFoodItemCompleteType = useCallback(
@@ -184,10 +208,14 @@ export function useDietPlanActions() {
       completed: boolean
     ) => {
       const actionKey = `food-complete-${day}-${mealType}-${foodIndex}`;
-
-      if (isProcessing[actionKey]) return;
+      // Prevent double-toggling the same food item while allowing other actions
+      if (inFlightCompletions.current.has(actionKey)) {
+        // Silently ignore double-toggling the same completion action
+        return;
+      }
       if (!checkRequiredData(actionKey)) return;
       setActionErrors((prev) => ({ ...prev, [actionKey]: '' }));
+      inFlightCompletions.current.add(actionKey);
 
       const foodItems = dietPlan?.days[day]?.meals?.[mealType] || [];
       const foodItem = foodItems[foodIndex];
@@ -199,34 +227,55 @@ export function useDietPlanActions() {
         return;
       }
       const foodItemId = foodItem.id;
-      dietPlanApi
-        .setFoodItemCompletion({
+
+      // Optimistically update the SWR cache for immediate UI feedback
+      await mutate(
+        DIET_PLAN_CACHE_KEY,
+        (current: any) => {
+          if (!current) return current;
+          const updated = { ...current };
+          if (
+            updated.days &&
+            updated.days[day] &&
+            updated.days[day].meals &&
+            updated.days[day].meals[mealType]
+          ) {
+            updated.days[day].meals[mealType] = updated.days[day].meals[
+              mealType
+            ].map((item: FoodItem, idx: number) =>
+              idx === foodIndex ? { ...item, completed } : item
+            );
+          }
+          return updated;
+        },
+        false // Do not revalidate yet
+      );
+
+      try {
+        await dietPlanApi.setFoodItemCompletion({
           userId: user!.id as string,
           dietPlanId: dietPlan!.id as string,
           foodItemId,
           completed,
-        })
-        .catch((err) => {});
-
-      const allCompleted = foodItems.every((item, idx) =>
-        idx === foodIndex ? completed : item.completed || false
-      );
-
-      if (allCompleted && completed) {
-        handleMealComplete(day, mealType, true).catch((err) => {});
+        });
+        // No need to revalidate here; API already does it after mutation
+      } catch (err) {
+        // Roll back optimistic update if server call fails
+        await mutate(DIET_PLAN_CACHE_KEY);
+        setActionErrors((prev) => ({
+          ...prev,
+          [actionKey]: en.dietPlan.errorUpdatingFoodCompletion,
+        }));
+      } finally {
+        inFlightCompletions.current.delete(actionKey);
       }
-
-      setTimeout(() => refreshDietPlan(), 500);
     },
-    [
-      dietPlan,
-      user,
-      refreshDietPlan,
-      handleMealComplete,
-      isProcessing,
-      checkRequiredData,
-    ]
+    // Only include true dependencies; do not include isProcessing
+    [dietPlan, user, checkRequiredData]
   );
+
+  // Helper to check if a completion action is in flight for a given key
+  const isCompletionInFlight = (key: string) => inFlightCompletions.current.has(key);
 
   return {
     editingMeals,
@@ -238,6 +287,7 @@ export function useDietPlanActions() {
     handleSaveMeal,
     handleMealComplete,
     handleFoodItemComplete,
+    isCompletionInFlight,
   };
 }
 

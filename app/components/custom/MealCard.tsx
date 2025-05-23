@@ -21,6 +21,7 @@ import {
   ChevronUp,
   Info,
   Loader2,
+  Loader,
 } from 'lucide-react';
 
 import { Skeleton } from '@/app/components/ui/skeleton';
@@ -29,6 +30,7 @@ import en from '@/shared/language/en';
 
 interface MealCardProps {
   title: string;
+  mealType: string;
   foodItems: FoodItem[];
   totalCalories?: number;
   completed?: boolean;
@@ -48,10 +50,13 @@ interface MealCardProps {
   onEdit?: () => void;
   onSave?: (foodItems: FoodItem[]) => void;
   onFoodItemComplete?: (index: number, completed: boolean) => void;
+  isCompletionInFlight: (key: string) => boolean;
+  day: string;
 }
 
 export function MealCard({
   title,
+  mealType,
   foodItems,
   totalCalories,
   completed = false,
@@ -63,6 +68,8 @@ export function MealCard({
   onEdit,
   onSave,
   onFoodItemComplete,
+  isCompletionInFlight,
+  day,
 }: MealCardProps) {
   const [internalIsEditing, setInternalIsEditing] = React.useState(false);
   const [editItems, setEditItems] = React.useState<FoodItem[]>(foodItems);
@@ -72,11 +79,11 @@ export function MealCard({
 
   const isEditing =
     externalIsEditing !== undefined ? externalIsEditing : internalIsEditing;
+
   React.useEffect(() => {
     setEditItems(foodItems);
   }, [foodItems, isEditing]);
 
-  // Toggle expanded state for a food item
   const toggleItemExpanded = (index: number) => {
     setExpandedItems((prev) => ({
       ...prev,
@@ -84,51 +91,39 @@ export function MealCard({
     }));
   };
 
-  // Handle toggling meal completion
   const handleMealComplete = () => {
     if (onComplete) onComplete(!completed);
   };
 
-  // Handle toggling individual food item completion
   const handleFoodItemComplete = (idx: number, isCompleted: boolean) => {
-    // Create a new array with the updated item
     const updatedItems = foodItems.map((item, i) =>
       i === idx ? { ...item, completed: isCompleted } : item
     );
-
-    // Update local state
     setEditItems(updatedItems);
 
-    // Call the parent component's handler if provided
     if (onFoodItemComplete) {
       onFoodItemComplete(idx, isCompleted);
     }
-
-    // If onSave is provided and we're not in edit mode, save changes immediately
     if (!isEditing && onSave) {
       onSave(updatedItems);
     }
   };
 
-  // Handle entering edit mode
   const handleEdit = () => {
     setInternalIsEditing(true);
     if (onEdit) onEdit();
   };
 
-  // Handle saving edits
   const handleSave = () => {
     setInternalIsEditing(false);
     if (onSave) onSave(editItems);
   };
 
-  // Handle cancelling edits
   const handleCancel = () => {
     setInternalIsEditing(false);
     setEditItems(foodItems); // Reset to original items
   };
 
-  // Handle updating food item properties
   const handleItemChange = (
     idx: number,
     key: keyof FoodItem,
@@ -139,7 +134,6 @@ export function MealCard({
     );
   };
 
-  // Handle adding a new item
   const handleAddItem = () => {
     setEditItems([
       ...editItems,
@@ -147,7 +141,6 @@ export function MealCard({
     ]);
   };
 
-  // Handle removing an item
   const handleRemoveItem = (idx: number) => {
     setEditItems((items) => items.filter((_, i) => i !== idx));
   };
@@ -157,11 +150,9 @@ export function MealCard({
       <CardHeader className='pb-2'>
         <CardTitle className='flex justify-between items-center'>
           <div className='flex items-center gap-2'>
-            {/* Meal title */}
             <span className='text-lg font-medium'>{title}</span>
           </div>
 
-          {/* Meal calories */}
           {totalCalories !== undefined && (
             <span className='text-sm font-normal bg-secondary px-2 py-1 rounded-md'>
               {totalCalories} {en.calories}
@@ -169,30 +160,37 @@ export function MealCard({
           )}
         </CardTitle>
 
-        {/* Meal completion checkbox */}
         {onComplete && (
           <div className='flex items-center gap-2 mt-2'>
-            <Checkbox
-              id={`meal-${title.replace(/\s+/g, '-').toLowerCase()}`}
-              checked={completed}
-              onCheckedChange={handleMealComplete}
-              disabled={isLoading.mealComplete}
-              aria-label={`${en.markAsCompleted}: ${title}`}
-            />
-            <Label
-              htmlFor={`meal-${title.replace(/\s+/g, '-').toLowerCase()}`}
-              className={completed ? 'text-muted-foreground' : ''}
-            >
-              {en.markAsCompleted}
-              {isLoading.mealComplete && (
-                <Loader2 className='h-3 w-3 ml-1 inline animate-spin' />
-              )}
-            </Label>
+            {(() => {
+              const mealKey = `meal-complete-${day}-${title}`;
+              const mealLoading = isCompletionInFlight(mealKey);
+
+              return (
+                <>
+                  <Checkbox
+                    id={`meal-${title.replace(/\s+/g, '-').toLowerCase()}`}
+                    checked={completed}
+                    onCheckedChange={handleMealComplete}
+                    disabled={mealLoading}
+                    aria-label={`${en.markAsCompleted}: ${title}`}
+                  />
+                  <Label
+                    htmlFor={`meal-${title.replace(/\s+/g, '-').toLowerCase()}`}
+                    className={completed ? 'text-muted-foreground' : ''}
+                  >
+                    {en.markAsCompleted}
+                    {mealLoading && (
+                      <Loader className='h-3 w-3 ml-1 inline animate-spin' />
+                    )}
+                  </Label>
+                </>
+              );
+            })()}
           </div>
         )}
       </CardHeader>
       <CardContent className='pt-0'>
-        {/* Error messages */}
         {(errors.save || errors.mealComplete || errors.foodComplete) && (
           <div className='mb-3 p-2 border border-red-200 bg-red-50 rounded-md text-red-600 text-sm'>
             {errors.save || errors.mealComplete || errors.foodComplete}
@@ -372,49 +370,58 @@ export function MealCard({
           </div>
         ) : (
           <ul className='space-y-4'>
-            {foodItems.map((item, index) => (
-              <li key={index} className='border-b pb-3'>
-                <div className='flex items-center justify-between'>
-                  <div className='flex items-center gap-2 flex-1'>
-                    <Checkbox
-                      id={`food-item-${index}`}
-                      checked={item.completed || false}
-                      onCheckedChange={(checked) =>
-                        handleFoodItemComplete(index, checked === true)
-                      }
-                      disabled={isLoading.foodComplete}
-                      aria-label={`${en.markAsCompleted}: ${item.food}`}
-                    />
-                    {isLoading.foodComplete && (
-                      <Loader2 className='h-3 w-3 ml-1 animate-spin text-muted-foreground' />
-                    )}
-                    <Label
-                      htmlFor={`food-item-${index}`}
-                      className={`flex-1 ${
-                        item.completed
-                          ? 'line-through text-muted-foreground'
-                          : ''
-                      }`}
-                    >
-                      <span className='font-medium'>{item.food}</span>
-                      {item.quantity && item.unit && (
-                        <span className='text-sm text-muted-foreground ml-2'>
-                          {item.quantity} {item.unit}
-                        </span>
+            {foodItems.map((item, index) => {
+              // Use mealType (not title) for key generation to match action logic
+              const foodKey =
+                day && mealType !== undefined
+                  ? `food-complete-${day}-${mealType}-${index}`
+                  : undefined;
+              const itemLoading =
+                foodKey && isCompletionInFlight
+                  ? isCompletionInFlight(foodKey)
+                  : isLoading.foodComplete;
+              return (
+                <li key={index} className='border-b pb-3'>
+                  <div className='flex items-center justify-between'>
+                    <div className='flex items-center gap-2 flex-1'>
+                      <Checkbox
+                        id={`food-item-${index}`}
+                        checked={item.completed || false}
+                        onCheckedChange={(checked) =>
+                          handleFoodItemComplete(index, checked === true)
+                        }
+                        disabled={itemLoading}
+                        aria-label={`${en.markAsCompleted}: ${item.food}`}
+                      />
+                      {itemLoading && (
+                        <Loader className='h-3 w-3 ml-1 animate-spin text-muted-foreground' />
                       )}
-                    </Label>
-                  </div>
-
-                  <div className='flex items-center gap-2'>
-                    {item.calories !== null && (
-                      <span className='text-sm font-medium'>
-                        {item.calories} {en.calories}
-                      </span>
-                    )}
-                    <Button
-                      variant='ghost'
-                      size='icon'
-                      className='h-6 w-6'
+                      <Label
+                        htmlFor={`food-item-${index}`}
+                        className={`flex-1 ${
+                          item.completed
+                            ? 'line-through text-muted-foreground'
+                            : ''
+                        }`}
+                      >
+                        <span className='font-medium'>{item.food}</span>
+                        {item.quantity && item.unit && (
+                          <span className='text-sm text-muted-foreground ml-2'>
+                            {item.quantity} {item.unit}
+                          </span>
+                        )}
+                        {item.calories !== null &&
+                          item.calories !== undefined && (
+                            <span className='text-sm font-medium ml-2'>
+                              {item.calories} {en.calories}
+                            </span>
+                          )}
+                      </Label>
+                    </div>
+                    {/* Toggle for expanded food item details */}
+                    <button
+                      type='button'
+                      className='ml-2 text-muted-foreground'
                       onClick={() => toggleItemExpanded(index)}
                       aria-label={
                         expandedItems[index] ? en.hideDetails : en.showDetails
@@ -425,40 +432,41 @@ export function MealCard({
                       ) : (
                         <ChevronDown className='h-4 w-4' />
                       )}
-                    </Button>
+                    </button>
                   </div>
-                </div>
-
-                {/* Expanded details section */}
-                {expandedItems[index] && (
-                  <div className='mt-2 ml-8 p-3 bg-muted/50 rounded-md text-sm'>
-                    <h4 className='font-medium mb-1 flex items-center gap-1'>
-                      <Info className='h-3 w-3' /> {en.nutritionalInfo}
-                    </h4>
-                    <div className='grid grid-cols-2 gap-x-4 gap-y-1'>
-                      <div className='flex justify-between'>
-                        <span>{en.carbs}:</span>
-                        <span className='font-medium'>{item.carbs || 0}g</span>
-                      </div>
-                      <div className='flex justify-between'>
-                        <span>{en.sugars}:</span>
-                        <span className='font-medium'>{item.sugars || 0}g</span>
-                      </div>
-                      <div className='flex justify-between'>
-                        <span>{en.protein}:</span>
-                        <span className='font-medium'>
-                          {item.protein || 0}g
-                        </span>
-                      </div>
-                      <div className='flex justify-between'>
-                        <span>{en.fat}:</span>
-                        <span className='font-medium'>{item.fat || 0}g</span>
+                  {/* Nutrition transparency: show all food item macros for user clarity */}
+                  {expandedItems[index] && (
+                    <div className='mt-2 ml-8 p-3 bg-muted/50 rounded-md text-sm'>
+                      {/* This section is shown to provide full macro breakdown for each food item, supporting user nutrition transparency and compliance with app business rules. */}
+                      <div className='grid grid-cols-2 gap-x-4 gap-y-1'>
+                        <div className='flex justify-between'>
+                          <span>{en.carbs}:</span>
+                          <span className='font-medium'>
+                            {item.carbs || 0}g
+                          </span>
+                        </div>
+                        <div className='flex justify-between'>
+                          <span>{en.sugars}:</span>
+                          <span className='font-medium'>
+                            {item.sugars || 0}g
+                          </span>
+                        </div>
+                        <div className='flex justify-between'>
+                          <span>{en.protein}:</span>
+                          <span className='font-medium'>
+                            {item.protein || 0}g
+                          </span>
+                        </div>
+                        <div className='flex justify-between'>
+                          <span>{en.fat}:</span>
+                          <span className='font-medium'>{item.fat || 0}g</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </li>
-            ))}
+                  )}
+                </li>
+              );
+            })}
           </ul>
         )}
       </CardContent>
