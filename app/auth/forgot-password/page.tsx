@@ -33,6 +33,7 @@ export default function ForgotPasswordPage() {
       const siteUrl =
         process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
       const redirectTo = `${siteUrl}/auth/reset-password`;
+      // const redirectTo = `http://localhost:3000/auth/reset-password`;
 
       const response = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: redirectTo,

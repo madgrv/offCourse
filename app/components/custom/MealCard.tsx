@@ -8,6 +8,7 @@ import {
 } from '@/app/components/ui/card';
 import { FoodItem } from '@/app/lib/types';
 import { Button } from '@/app/components/ui/button';
+import { Badge } from '@/app/components/ui/badge'; // Import shadcn badge for calories chip
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { Checkbox } from '@/app/components/ui/checkbox';
@@ -410,29 +411,30 @@ export function MealCard({
                             {item.quantity} {item.unit}
                           </span>
                         )}
-                        {item.calories !== null &&
-                          item.calories !== undefined && (
-                            <span className='text-sm font-medium ml-2'>
-                              {item.calories} {en.calories}
-                            </span>
-                          )}
                       </Label>
                     </div>
                     {/* Toggle for expanded food item details */}
-                    <button
-                      type='button'
-                      className='ml-2 text-muted-foreground'
-                      onClick={() => toggleItemExpanded(index)}
-                      aria-label={
-                        expandedItems[index] ? en.hideDetails : en.showDetails
-                      }
-                    >
-                      {expandedItems[index] ? (
-                        <ChevronUp className='h-4 w-4' />
-                      ) : (
-                        <ChevronDown className='h-4 w-4' />
-                      )}
-                    </button>
+                    {/* Calories badge is placed at the end of the row for clarity and consistency with day buttons. It uses a neutral/grey background, is non-clickable, and matches the day button's border radius (rounded-md). */}
+<Badge
+  className="ml-2 bg-muted text-muted-foreground rounded-md pointer-events-none select-none h-7 px-2 flex items-center"
+  variant="secondary"
+>
+  {item.calories} {en.calories}
+</Badge>
+<button
+  type='button'
+  className='ml-2 text-muted-foreground'
+  onClick={() => toggleItemExpanded(index)}
+  aria-label={
+    expandedItems[index] ? en.hideDetails : en.showDetails
+  }
+>
+  {expandedItems[index] ? (
+    <ChevronUp className='h-4 w-4' />
+  ) : (
+    <ChevronDown className='h-4 w-4' />
+  )}
+</button>
                   </div>
                   {/* Nutrition transparency: show all food item macros for user clarity */}
                   {expandedItems[index] && (
