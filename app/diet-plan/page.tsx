@@ -59,7 +59,7 @@ export default function DietPlanPage() {
             {/* Skeleton loading UI */}
             <div className='space-y-6'>
               <div className='space-y-2'>
-                <div className='flex space-x-2 overflow-x-auto pb-2'>
+                <div className='flex space-x-2 overflow-x-auto scrollbar-none pb-2'>
                   {Array.from({ length: 7 }).map((_, i) => (
                     <div key={i} className='flex-shrink-0'>
                       <Skeleton className='h-10 w-20' />
@@ -67,7 +67,7 @@ export default function DietPlanPage() {
                   ))}
                 </div>
 
-                {Array.from({ length: 3 }).map((_, i) => (
+                {Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className='rounded-lg border p-4 space-y-4'>
                     <div className='flex justify-between items-center'>
                       <Skeleton className='h-6 w-24' />
@@ -101,7 +101,7 @@ export default function DietPlanPage() {
             {dietPlan.planName || en.dietPlan.defaultTitle}
           </h1>
           <Tabs defaultValue={defaultTab}>
-            <TabsList>
+            <TabsList className='flex-nowrap overflow-x-auto scrollbar-none w-full'>
               {days.map((day) => (
                 <TabsTrigger key={day} value={day}>
                   {day}
