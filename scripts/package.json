@@ -1,0 +1,7 @@
+{
+  "name": "diet-app-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for the diet app",
+  "type": "module",
+  "private": true
+}

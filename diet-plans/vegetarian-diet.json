@@ -1,0 +1,806 @@
+{
+  "id": "vegetarian-diet-plan",
+  "planName": "Vegetarian Diet",
+  "planDescription": "A balanced vegetarian diet with a variety of plant-based proteins, whole grains, and vegetables",
+  "days": {
+    "Monday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Overnight oats",
+            "calories": 280,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 45,
+            "sugars": 12,
+            "protein": 10,
+            "fat": 6
+          },
+          {
+            "food": "Banana",
+            "calories": 105,
+            "quantity": 1,
+            "unit": "medium",
+            "carbs": 27,
+            "sugars": 14,
+            "protein": 1.3,
+            "fat": 0.4
+          },
+          {
+            "food": "Chia seeds",
+            "calories": 60,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 4,
+            "sugars": 0,
+            "protein": 2,
+            "fat": 4
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Quinoa bowl",
+            "calories": 220,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 40,
+            "sugars": 2,
+            "protein": 8,
+            "fat": 3.5
+          },
+          {
+            "food": "Roasted vegetables",
+            "calories": 120,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 25,
+            "sugars": 10,
+            "protein": 4,
+            "fat": 1
+          },
+          {
+            "food": "Feta cheese",
+            "calories": 80,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 1,
+            "sugars": 1,
+            "protein": 4,
+            "fat": 6.5
+          }
+        ],
+        "snack": [
+          {
+            "food": "Greek yogurt",
+            "calories": 150,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 6,
+            "sugars": 4,
+            "protein": 15,
+            "fat": 8
+          },
+          {
+            "food": "Mixed berries",
+            "calories": 45,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 10,
+            "sugars": 8,
+            "protein": 1,
+            "fat": 0.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Lentil curry",
+            "calories": 280,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 45,
+            "sugars": 5,
+            "protein": 15,
+            "fat": 6
+          },
+          {
+            "food": "Brown rice",
+            "calories": 150,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 32,
+            "sugars": 0.5,
+            "protein": 3,
+            "fat": 1
+          },
+          {
+            "food": "Steamed broccoli",
+            "calories": 55,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 11,
+            "sugars": 3,
+            "protein": 3.7,
+            "fat": 0.6
+          }
+        ]
+      },
+      "totalCalories": 1545
+    },
+    "Tuesday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Vegetable omelette",
+            "calories": 220,
+            "quantity": 3,
+            "unit": "eggs",
+            "carbs": 5,
+            "sugars": 3,
+            "protein": 18,
+            "fat": 15
+          },
+          {
+            "food": "Whole grain toast",
+            "calories": 80,
+            "quantity": 1,
+            "unit": "slice",
+            "carbs": 15,
+            "sugars": 1.5,
+            "protein": 3,
+            "fat": 1
+          },
+          {
+            "food": "Avocado",
+            "calories": 80,
+            "quantity": 0.25,
+            "unit": "medium",
+            "carbs": 4,
+            "sugars": 0.3,
+            "protein": 1,
+            "fat": 7.5
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Mediterranean salad",
+            "calories": 180,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 20,
+            "sugars": 8,
+            "protein": 5,
+            "fat": 10
+          },
+          {
+            "food": "Hummus",
+            "calories": 160,
+            "quantity": 60,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 0.5,
+            "protein": 8,
+            "fat": 9
+          },
+          {
+            "food": "Whole grain pita",
+            "calories": 170,
+            "quantity": 1,
+            "unit": "piece",
+            "carbs": 35,
+            "sugars": 1,
+            "protein": 6,
+            "fat": 1.5
+          }
+        ],
+        "snack": [
+          {
+            "food": "Apple",
+            "calories": 95,
+            "quantity": 1,
+            "unit": "medium",
+            "carbs": 25,
+            "sugars": 19,
+            "protein": 0.5,
+            "fat": 0.3
+          },
+          {
+            "food": "Almond butter",
+            "calories": 95,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 3.5,
+            "fat": 8.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Vegetable stir-fry",
+            "calories": 180,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 25,
+            "sugars": 12,
+            "protein": 6,
+            "fat": 7
+          },
+          {
+            "food": "Tofu",
+            "calories": 140,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 0,
+            "protein": 16,
+            "fat": 8
+          },
+          {
+            "food": "Brown rice",
+            "calories": 150,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 32,
+            "sugars": 0.5,
+            "protein": 3,
+            "fat": 1
+          }
+        ]
+      },
+      "totalCalories": 1550
+    },
+    "Wednesday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Smoothie bowl",
+            "calories": 280,
+            "quantity": 300,
+            "unit": "ml",
+            "carbs": 45,
+            "sugars": 25,
+            "protein": 10,
+            "fat": 6
+          },
+          {
+            "food": "Granola",
+            "calories": 120,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 20,
+            "sugars": 8,
+            "protein": 3,
+            "fat": 4
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Chickpea wrap",
+            "calories": 320,
+            "quantity": 1,
+            "unit": "wrap",
+            "carbs": 45,
+            "sugars": 3,
+            "protein": 12,
+            "fat": 10
+          },
+          {
+            "food": "Mixed green salad",
+            "calories": 35,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 2,
+            "protein": 2,
+            "fat": 0.5
+          },
+          {
+            "food": "Olive oil dressing",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ],
+        "snack": [
+          {
+            "food": "Cottage cheese",
+            "calories": 120,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 3,
+            "protein": 12,
+            "fat": 5
+          },
+          {
+            "food": "Pineapple chunks",
+            "calories": 50,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 13,
+            "sugars": 10,
+            "protein": 0.5,
+            "fat": 0.1
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Vegetable lasagna",
+            "calories": 350,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 40,
+            "sugars": 8,
+            "protein": 15,
+            "fat": 14
+          },
+          {
+            "food": "Garden salad",
+            "calories": 45,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 8,
+            "sugars": 4,
+            "protein": 2,
+            "fat": 0.5
+          },
+          {
+            "food": "Balsamic vinaigrette",
+            "calories": 60,
+            "quantity": 15,
+            "unit": "ml",
+            "carbs": 3,
+            "sugars": 2,
+            "protein": 0,
+            "fat": 6
+          }
+        ]
+      },
+      "totalCalories": 1460
+    },
+    "Thursday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Greek yogurt parfait",
+            "calories": 200,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 20,
+            "sugars": 15,
+            "protein": 18,
+            "fat": 8
+          },
+          {
+            "food": "Sliced strawberries",
+            "calories": 35,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 8,
+            "sugars": 6,
+            "protein": 0.7,
+            "fat": 0.3
+          },
+          {
+            "food": "Honey",
+            "calories": 60,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 17,
+            "sugars": 17,
+            "protein": 0,
+            "fat": 0
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Caprese sandwich",
+            "calories": 380,
+            "quantity": 1,
+            "unit": "sandwich",
+            "carbs": 40,
+            "sugars": 5,
+            "protein": 15,
+            "fat": 18
+          },
+          {
+            "food": "Cherry tomatoes",
+            "calories": 25,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 4,
+            "protein": 1,
+            "fat": 0.3
+          }
+        ],
+        "snack": [
+          {
+            "food": "Trail mix",
+            "calories": 180,
+            "quantity": 40,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 10,
+            "protein": 5,
+            "fat": 12
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Black bean burger",
+            "calories": 250,
+            "quantity": 1,
+            "unit": "patty",
+            "carbs": 30,
+            "sugars": 2,
+            "protein": 12,
+            "fat": 10
+          },
+          {
+            "food": "Sweet potato fries",
+            "calories": 160,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 30,
+            "sugars": 6,
+            "protein": 2,
+            "fat": 3.5
+          },
+          {
+            "food": "Mixed vegetables",
+            "calories": 60,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 12,
+            "sugars": 6,
+            "protein": 3,
+            "fat": 0.5
+          }
+        ]
+      },
+      "totalCalories": 1350
+    },
+    "Friday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Vegetable frittata",
+            "calories": 250,
+            "quantity": 1,
+            "unit": "serving",
+            "carbs": 8,
+            "sugars": 5,
+            "protein": 16,
+            "fat": 18
+          },
+          {
+            "food": "Whole grain toast",
+            "calories": 80,
+            "quantity": 1,
+            "unit": "slice",
+            "carbs": 15,
+            "sugars": 1.5,
+            "protein": 3,
+            "fat": 1
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Lentil soup",
+            "calories": 230,
+            "quantity": 300,
+            "unit": "ml",
+            "carbs": 40,
+            "sugars": 6,
+            "protein": 12,
+            "fat": 3
+          },
+          {
+            "food": "Whole grain roll",
+            "calories": 120,
+            "quantity": 1,
+            "unit": "roll",
+            "carbs": 22,
+            "sugars": 2,
+            "protein": 4,
+            "fat": 2
+          },
+          {
+            "food": "Butter",
+            "calories": 35,
+            "quantity": 5,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 4
+          }
+        ],
+        "snack": [
+          {
+            "food": "Edamame",
+            "calories": 120,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 10,
+            "sugars": 2,
+            "protein": 11,
+            "fat": 5
+          },
+          {
+            "food": "Rice crackers",
+            "calories": 80,
+            "quantity": 20,
+            "unit": "g",
+            "carbs": 17,
+            "sugars": 0.5,
+            "protein": 1.5,
+            "fat": 0.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Eggplant parmesan",
+            "calories": 320,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 25,
+            "sugars": 10,
+            "protein": 14,
+            "fat": 18
+          },
+          {
+            "food": "Whole wheat pasta",
+            "calories": 180,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 37,
+            "sugars": 1,
+            "protein": 8,
+            "fat": 1
+          },
+          {
+            "food": "Garden salad",
+            "calories": 45,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 8,
+            "sugars": 4,
+            "protein": 2,
+            "fat": 0.5
+          }
+        ]
+      },
+      "totalCalories": 1460
+    },
+    "Saturday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Pancakes",
+            "calories": 350,
+            "quantity": 3,
+            "unit": "medium",
+            "carbs": 60,
+            "sugars": 15,
+            "protein": 8,
+            "fat": 9
+          },
+          {
+            "food": "Maple syrup",
+            "calories": 100,
+            "quantity": 30,
+            "unit": "ml",
+            "carbs": 26,
+            "sugars": 24,
+            "protein": 0,
+            "fat": 0
+          },
+          {
+            "food": "Mixed berries",
+            "calories": 45,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 10,
+            "sugars": 8,
+            "protein": 1,
+            "fat": 0.5
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Falafel wrap",
+            "calories": 380,
+            "quantity": 1,
+            "unit": "wrap",
+            "carbs": 50,
+            "sugars": 4,
+            "protein": 14,
+            "fat": 16
+          },
+          {
+            "food": "Tzatziki sauce",
+            "calories": 60,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 1.5,
+            "protein": 1,
+            "fat": 5
+          },
+          {
+            "food": "Cucumber and tomato salad",
+            "calories": 45,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 8,
+            "sugars": 5,
+            "protein": 1.5,
+            "fat": 0.5
+          }
+        ],
+        "snack": [
+          {
+            "food": "Cheese and crackers",
+            "calories": 180,
+            "quantity": 1,
+            "unit": "serving",
+            "carbs": 15,
+            "sugars": 1,
+            "protein": 7,
+            "fat": 10
+          },
+          {
+            "food": "Grapes",
+            "calories": 60,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 14,
+            "protein": 0.6,
+            "fat": 0.2
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Vegetable pizza",
+            "calories": 450,
+            "quantity": 2,
+            "unit": "slices",
+            "carbs": 60,
+            "sugars": 8,
+            "protein": 18,
+            "fat": 16
+          },
+          {
+            "food": "Caesar salad",
+            "calories": 120,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 2,
+            "protein": 3,
+            "fat": 10
+          }
+        ]
+      },
+      "totalCalories": 1790
+    },
+    "Sunday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Vegetarian breakfast burrito",
+            "calories": 380,
+            "quantity": 1,
+            "unit": "burrito",
+            "carbs": 45,
+            "sugars": 3,
+            "protein": 15,
+            "fat": 16
+          },
+          {
+            "food": "Fresh orange juice",
+            "calories": 110,
+            "quantity": 250,
+            "unit": "ml",
+            "carbs": 26,
+            "sugars": 20,
+            "protein": 1.5,
+            "fat": 0.5
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Spinach and ricotta cannelloni",
+            "calories": 380,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 40,
+            "sugars": 6,
+            "protein": 18,
+            "fat": 16
+          },
+          {
+            "food": "Mixed green salad",
+            "calories": 35,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 2,
+            "protein": 2,
+            "fat": 0.5
+          }
+        ],
+        "snack": [
+          {
+            "food": "Yogurt parfait",
+            "calories": 180,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 25,
+            "sugars": 18,
+            "protein": 8,
+            "fat": 5
+          },
+          {
+            "food": "Walnuts",
+            "calories": 90,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 0.5,
+            "protein": 2,
+            "fat": 9
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Stuffed bell peppers",
+            "calories": 320,
+            "quantity": 2,
+            "unit": "peppers",
+            "carbs": 35,
+            "sugars": 8,
+            "protein": 12,
+            "fat": 14
+          },
+          {
+            "food": "Quinoa",
+            "calories": 120,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 21,
+            "sugars": 1,
+            "protein": 4,
+            "fat": 2
+          },
+          {
+            "food": "Garlic bread",
+            "calories": 150,
+            "quantity": 2,
+            "unit": "slices",
+            "carbs": 20,
+            "sugars": 1,
+            "protein": 3,
+            "fat": 7
+          }
+        ]
+      },
+      "totalCalories": 1765
+    }
+  },
+  "nutritionalInfo": {
+    "adultMale": {
+      "recommendedDailyIntake": 2000
+    },
+    "adultFemale": {
+      "recommendedDailyIntake": 1800
+    }
+  }
+}

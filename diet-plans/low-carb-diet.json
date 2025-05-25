@@ -1,0 +1,816 @@
+{
+  "id": "low-carb-diet-plan",
+  "planName": "Low-Carb Diet",
+  "planDescription": "A diet plan focused on reducing carbohydrate intake while maintaining adequate protein and healthy fats",
+  "days": {
+    "Monday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Greek yogurt",
+            "calories": 150,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 6,
+            "sugars": 4,
+            "protein": 15,
+            "fat": 8
+          },
+          {
+            "food": "Mixed berries",
+            "calories": 45,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 10,
+            "sugars": 8,
+            "protein": 1,
+            "fat": 0.5
+          },
+          {
+            "food": "Almonds",
+            "calories": 90,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 3,
+            "fat": 8
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Grilled chicken breast",
+            "calories": 165,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 31,
+            "fat": 3.6
+          },
+          {
+            "food": "Mixed green salad",
+            "calories": 35,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 2,
+            "protein": 2,
+            "fat": 0.5
+          },
+          {
+            "food": "Olive oil dressing",
+            "calories": 120,
+            "quantity": 15,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 14
+          }
+        ],
+        "snack": [
+          {
+            "food": "Cheddar cheese",
+            "calories": 110,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 0.5,
+            "sugars": 0,
+            "protein": 7,
+            "fat": 9
+          },
+          {
+            "food": "Cucumber slices",
+            "calories": 15,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1.5,
+            "protein": 0.6,
+            "fat": 0.1
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Baked salmon",
+            "calories": 280,
+            "quantity": 180,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 34,
+            "fat": 16
+          },
+          {
+            "food": "Steamed broccoli",
+            "calories": 55,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 11,
+            "sugars": 3,
+            "protein": 3.7,
+            "fat": 0.6
+          },
+          {
+            "food": "Butter",
+            "calories": 70,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 8
+          }
+        ]
+      },
+      "totalCalories": 1135
+    },
+    "Tuesday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Scrambled eggs",
+            "calories": 180,
+            "quantity": 2,
+            "unit": "large",
+            "carbs": 1,
+            "sugars": 1,
+            "protein": 12,
+            "fat": 14
+          },
+          {
+            "food": "Avocado",
+            "calories": 160,
+            "quantity": 0.5,
+            "unit": "medium",
+            "carbs": 8,
+            "sugars": 0.5,
+            "protein": 2,
+            "fat": 15
+          },
+          {
+            "food": "Cherry tomatoes",
+            "calories": 25,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 4,
+            "protein": 1,
+            "fat": 0.3
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Tuna salad",
+            "calories": 180,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 1,
+            "protein": 25,
+            "fat": 8
+          },
+          {
+            "food": "Mixed greens",
+            "calories": 20,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 1.5,
+            "fat": 0.3
+          },
+          {
+            "food": "Olive oil",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ],
+        "snack": [
+          {
+            "food": "Celery sticks",
+            "calories": 15,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1.5,
+            "protein": 0.7,
+            "fat": 0.2
+          },
+          {
+            "food": "Almond butter",
+            "calories": 95,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 3.5,
+            "fat": 8.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Grilled steak",
+            "calories": 250,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 30,
+            "fat": 14
+          },
+          {
+            "food": "Cauliflower mash",
+            "calories": 70,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 14,
+            "sugars": 5,
+            "protein": 2.8,
+            "fat": 0.5
+          },
+          {
+            "food": "Butter",
+            "calories": 70,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 8
+          }
+        ]
+      },
+      "totalCalories": 1145
+    },
+    "Wednesday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Protein smoothie",
+            "calories": 200,
+            "quantity": 300,
+            "unit": "ml",
+            "carbs": 10,
+            "sugars": 5,
+            "protein": 25,
+            "fat": 7
+          },
+          {
+            "food": "Chia seeds",
+            "calories": 60,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 4,
+            "sugars": 0,
+            "protein": 2,
+            "fat": 4
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Chicken Caesar salad (no croutons)",
+            "calories": 280,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 3,
+            "protein": 30,
+            "fat": 16
+          },
+          {
+            "food": "Caesar dressing",
+            "calories": 80,
+            "quantity": 15,
+            "unit": "ml",
+            "carbs": 1,
+            "sugars": 1,
+            "protein": 0.5,
+            "fat": 8
+          }
+        ],
+        "snack": [
+          {
+            "food": "Hard-boiled egg",
+            "calories": 70,
+            "quantity": 1,
+            "unit": "large",
+            "carbs": 0.5,
+            "sugars": 0.5,
+            "protein": 6,
+            "fat": 5
+          },
+          {
+            "food": "Bell pepper slices",
+            "calories": 30,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 6,
+            "sugars": 4,
+            "protein": 1,
+            "fat": 0.3
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Baked cod",
+            "calories": 180,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 38,
+            "fat": 2
+          },
+          {
+            "food": "Roasted asparagus",
+            "calories": 40,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 7,
+            "sugars": 3,
+            "protein": 4,
+            "fat": 0.5
+          },
+          {
+            "food": "Olive oil",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ]
+      },
+      "totalCalories": 1020
+    },
+    "Thursday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Cottage cheese",
+            "calories": 120,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 3,
+            "protein": 12,
+            "fat": 5
+          },
+          {
+            "food": "Sliced strawberries",
+            "calories": 35,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 8,
+            "sugars": 6,
+            "protein": 0.7,
+            "fat": 0.3
+          },
+          {
+            "food": "Flaxseeds",
+            "calories": 55,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 0.2,
+            "protein": 1.9,
+            "fat": 4.3
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Turkey lettuce wraps",
+            "calories": 200,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 2,
+            "protein": 28,
+            "fat": 8
+          },
+          {
+            "food": "Avocado",
+            "calories": 160,
+            "quantity": 0.5,
+            "unit": "medium",
+            "carbs": 8,
+            "sugars": 0.5,
+            "protein": 2,
+            "fat": 15
+          }
+        ],
+        "snack": [
+          {
+            "food": "String cheese",
+            "calories": 80,
+            "quantity": 1,
+            "unit": "piece",
+            "carbs": 1,
+            "sugars": 0,
+            "protein": 7,
+            "fat": 6
+          },
+          {
+            "food": "Cucumber",
+            "calories": 15,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1.5,
+            "protein": 0.6,
+            "fat": 0.1
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Pork chop",
+            "calories": 220,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 30,
+            "fat": 10
+          },
+          {
+            "food": "Sautéed spinach",
+            "calories": 40,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 6,
+            "sugars": 0.8,
+            "protein": 5,
+            "fat": 0.5
+          },
+          {
+            "food": "Olive oil",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ]
+      },
+      "totalCalories": 1005
+    },
+    "Friday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Omelette with cheese",
+            "calories": 250,
+            "quantity": 3,
+            "unit": "eggs",
+            "carbs": 2,
+            "sugars": 2,
+            "protein": 19,
+            "fat": 19
+          },
+          {
+            "food": "Spinach",
+            "calories": 20,
+            "quantity": 50,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 0.4,
+            "protein": 2.5,
+            "fat": 0.3
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Chicken and avocado salad",
+            "calories": 320,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 10,
+            "sugars": 3,
+            "protein": 30,
+            "fat": 18
+          },
+          {
+            "food": "Olive oil dressing",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ],
+        "snack": [
+          {
+            "food": "Beef jerky",
+            "calories": 80,
+            "quantity": 25,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 2,
+            "protein": 13,
+            "fat": 1.5
+          },
+          {
+            "food": "Macadamia nuts",
+            "calories": 120,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 1,
+            "protein": 1.3,
+            "fat": 12.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Grilled shrimp",
+            "calories": 120,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 1,
+            "sugars": 0,
+            "protein": 24,
+            "fat": 2
+          },
+          {
+            "food": "Zucchini noodles",
+            "calories": 35,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 7,
+            "sugars": 5,
+            "protein": 1.5,
+            "fat": 0.3
+          },
+          {
+            "food": "Pesto sauce",
+            "calories": 120,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 0.5,
+            "protein": 3,
+            "fat": 12
+          }
+        ]
+      },
+      "totalCalories": 1145
+    },
+    "Saturday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Bacon",
+            "calories": 140,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 0.5,
+            "sugars": 0,
+            "protein": 10,
+            "fat": 12
+          },
+          {
+            "food": "Avocado",
+            "calories": 160,
+            "quantity": 0.5,
+            "unit": "medium",
+            "carbs": 8,
+            "sugars": 0.5,
+            "protein": 2,
+            "fat": 15
+          },
+          {
+            "food": "Fried eggs",
+            "calories": 180,
+            "quantity": 2,
+            "unit": "large",
+            "carbs": 1,
+            "sugars": 1,
+            "protein": 12,
+            "fat": 14
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Bunless burger",
+            "calories": 300,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 25,
+            "fat": 22
+          },
+          {
+            "food": "Lettuce wrap",
+            "calories": 5,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 1,
+            "sugars": 0.5,
+            "protein": 0.3,
+            "fat": 0.1
+          },
+          {
+            "food": "Cheese slice",
+            "calories": 70,
+            "quantity": 20,
+            "unit": "g",
+            "carbs": 0.5,
+            "sugars": 0.2,
+            "protein": 4,
+            "fat": 6
+          }
+        ],
+        "snack": [
+          {
+            "food": "Olives",
+            "calories": 60,
+            "quantity": 50,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 0,
+            "protein": 0.5,
+            "fat": 6
+          },
+          {
+            "food": "Feta cheese",
+            "calories": 80,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 1,
+            "sugars": 1,
+            "protein": 4,
+            "fat": 6.5
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Baked chicken thighs",
+            "calories": 280,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 28,
+            "fat": 18
+          },
+          {
+            "food": "Roasted Brussels sprouts",
+            "calories": 65,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 13,
+            "sugars": 3,
+            "protein": 4,
+            "fat": 0.5
+          },
+          {
+            "food": "Olive oil",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ]
+      },
+      "totalCalories": 1420
+    },
+    "Sunday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Smoked salmon",
+            "calories": 150,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 20,
+            "fat": 8
+          },
+          {
+            "food": "Cream cheese",
+            "calories": 100,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 1,
+            "protein": 2,
+            "fat": 10
+          },
+          {
+            "food": "Cucumber",
+            "calories": 15,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1.5,
+            "protein": 0.6,
+            "fat": 0.1
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Cobb salad",
+            "calories": 350,
+            "quantity": 300,
+            "unit": "g",
+            "carbs": 8,
+            "sugars": 5,
+            "protein": 30,
+            "fat": 22
+          },
+          {
+            "food": "Ranch dressing",
+            "calories": 120,
+            "quantity": 30,
+            "unit": "ml",
+            "carbs": 2,
+            "sugars": 1,
+            "protein": 0.3,
+            "fat": 12
+          }
+        ],
+        "snack": [
+          {
+            "food": "Pepperoni slices",
+            "calories": 140,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 1,
+            "sugars": 0,
+            "protein": 6,
+            "fat": 13
+          },
+          {
+            "food": "Mozzarella cheese",
+            "calories": 85,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 0.6,
+            "sugars": 0.3,
+            "protein": 6.3,
+            "fat": 6.3
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Ribeye steak",
+            "calories": 350,
+            "quantity": 180,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 35,
+            "fat": 24
+          },
+          {
+            "food": "Grilled asparagus",
+            "calories": 40,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 7,
+            "sugars": 3,
+            "protein": 4,
+            "fat": 0.5
+          },
+          {
+            "food": "Butter",
+            "calories": 70,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 8
+          }
+        ]
+      },
+      "totalCalories": 1420
+    }
+  },
+  "nutritionalInfo": {
+    "adultMale": {
+      "recommendedDailyIntake": 1800
+    },
+    "adultFemale": {
+      "recommendedDailyIntake": 1500
+    }
+  }
+}

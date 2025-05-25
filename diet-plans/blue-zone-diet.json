@@ -1,0 +1,896 @@
+{
+  "id": "blue-zone-diet-plan",
+  "planName": "Blue Zone Diet",
+  "planDescription": "A Mediterranean-inspired diet based on the eating habits of Sardinia and other Blue Zones where people live longer, healthier lives",
+  "days": {
+    "Monday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Whole grain sourdough bread",
+            "calories": 120,
+            "quantity": 60,
+            "unit": "g",
+            "carbs": 22,
+            "sugars": 1.5,
+            "protein": 4,
+            "fat": 1
+          },
+          {
+            "food": "Extra virgin olive oil",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          },
+          {
+            "food": "Fresh tomatoes",
+            "calories": 35,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 7,
+            "sugars": 5,
+            "protein": 1.5,
+            "fat": 0.5
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Minestrone soup",
+            "calories": 220,
+            "quantity": 300,
+            "unit": "ml",
+            "carbs": 30,
+            "sugars": 8,
+            "protein": 10,
+            "fat": 6
+          },
+          {
+            "food": "Fava beans",
+            "calories": 110,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 18,
+            "sugars": 2,
+            "protein": 8,
+            "fat": 0.5
+          },
+          {
+            "food": "Pecorino cheese",
+            "calories": 110,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 1,
+            "sugars": 0.5,
+            "protein": 7,
+            "fat": 9
+          }
+        ],
+        "snack": [
+          {
+            "food": "Almonds",
+            "calories": 90,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 3,
+            "fat": 8
+          },
+          {
+            "food": "Fresh figs",
+            "calories": 60,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 12,
+            "protein": 0.8,
+            "fat": 0.3
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Barley with vegetables",
+            "calories": 180,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 35,
+            "sugars": 3,
+            "protein": 5,
+            "fat": 2
+          },
+          {
+            "food": "Sardinian flatbread (pane carasau)",
+            "calories": 100,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 20,
+            "sugars": 0.5,
+            "protein": 3,
+            "fat": 1
+          },
+          {
+            "food": "Cannonau wine",
+            "calories": 85,
+            "quantity": 100,
+            "unit": "ml",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 0.1,
+            "fat": 0
+          }
+        ]
+      },
+      "totalCalories": 1190
+    },
+    "Tuesday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Barley porridge",
+            "calories": 150,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 30,
+            "sugars": 2,
+            "protein": 4,
+            "fat": 1
+          },
+          {
+            "food": "Honey",
+            "calories": 60,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 17,
+            "sugars": 17,
+            "protein": 0,
+            "fat": 0
+          },
+          {
+            "food": "Walnuts",
+            "calories": 90,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 0.5,
+            "protein": 2,
+            "fat": 9
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Lentil and vegetable soup",
+            "calories": 250,
+            "quantity": 300,
+            "unit": "ml",
+            "carbs": 40,
+            "sugars": 6,
+            "protein": 15,
+            "fat": 3
+          },
+          {
+            "food": "Whole grain bread",
+            "calories": 80,
+            "quantity": 40,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 1,
+            "protein": 3,
+            "fat": 1
+          },
+          {
+            "food": "Olives",
+            "calories": 60,
+            "quantity": 50,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 0,
+            "protein": 0.5,
+            "fat": 6
+          }
+        ],
+        "snack": [
+          {
+            "food": "Fresh oranges",
+            "calories": 70,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 17,
+            "sugars": 14,
+            "protein": 1.5,
+            "fat": 0.2
+          },
+          {
+            "food": "Fennel",
+            "calories": 25,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 3,
+            "protein": 1.2,
+            "fat": 0.2
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Fregola with seafood",
+            "calories": 320,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 45,
+            "sugars": 2,
+            "protein": 18,
+            "fat": 8
+          },
+          {
+            "food": "Roasted vegetables",
+            "calories": 120,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 25,
+            "sugars": 10,
+            "protein": 4,
+            "fat": 1
+          },
+          {
+            "food": "Cannonau wine",
+            "calories": 85,
+            "quantity": 100,
+            "unit": "ml",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 0.1,
+            "fat": 0
+          }
+        ]
+      },
+      "totalCalories": 1310
+    },
+    "Wednesday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Ricotta cheese",
+            "calories": 120,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 4,
+            "sugars": 2,
+            "protein": 10,
+            "fat": 8
+          },
+          {
+            "food": "Honey",
+            "calories": 60,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 17,
+            "sugars": 17,
+            "protein": 0,
+            "fat": 0
+          },
+          {
+            "food": "Whole grain bread",
+            "calories": 80,
+            "quantity": 40,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 1,
+            "protein": 3,
+            "fat": 1
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Sardinian malloreddus pasta",
+            "calories": 180,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 36,
+            "sugars": 1,
+            "protein": 6,
+            "fat": 1
+          },
+          {
+            "food": "Tomato sauce with herbs",
+            "calories": 80,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 12,
+            "sugars": 8,
+            "protein": 2,
+            "fat": 2
+          },
+          {
+            "food": "Pecorino cheese (grated)",
+            "calories": 55,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 0.5,
+            "sugars": 0.2,
+            "protein": 3.5,
+            "fat": 4.5
+          }
+        ],
+        "snack": [
+          {
+            "food": "Fresh pears",
+            "calories": 60,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 10,
+            "protein": 0.4,
+            "fat": 0.1
+          },
+          {
+            "food": "Hazelnuts",
+            "calories": 90,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 2.5,
+            "sugars": 0.5,
+            "protein": 2,
+            "fat": 9
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Minestrone with farro",
+            "calories": 220,
+            "quantity": 300,
+            "unit": "ml",
+            "carbs": 35,
+            "sugars": 6,
+            "protein": 8,
+            "fat": 4
+          },
+          {
+            "food": "Sardinian flatbread",
+            "calories": 100,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 20,
+            "sugars": 0.5,
+            "protein": 3,
+            "fat": 1
+          },
+          {
+            "food": "Olives",
+            "calories": 60,
+            "quantity": 50,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 0,
+            "protein": 0.5,
+            "fat": 6
+          }
+        ]
+      },
+      "totalCalories": 1105
+    },
+    "Thursday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Seadas (small amount, traditional)",
+            "calories": 150,
+            "quantity": 50,
+            "unit": "g",
+            "carbs": 20,
+            "sugars": 10,
+            "protein": 3,
+            "fat": 7
+          },
+          {
+            "food": "Fresh ricotta",
+            "calories": 90,
+            "quantity": 75,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1.5,
+            "protein": 7.5,
+            "fat": 6
+          },
+          {
+            "food": "Honey",
+            "calories": 40,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 11,
+            "sugars": 11,
+            "protein": 0,
+            "fat": 0
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Chickpea and vegetable stew",
+            "calories": 280,
+            "quantity": 300,
+            "unit": "g",
+            "carbs": 45,
+            "sugars": 8,
+            "protein": 12,
+            "fat": 6
+          },
+          {
+            "food": "Whole grain bread",
+            "calories": 80,
+            "quantity": 40,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 1,
+            "protein": 3,
+            "fat": 1
+          },
+          {
+            "food": "Extra virgin olive oil",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ],
+        "snack": [
+          {
+            "food": "Fresh grapes",
+            "calories": 60,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 14,
+            "protein": 0.6,
+            "fat": 0.2
+          },
+          {
+            "food": "Almonds",
+            "calories": 60,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 2,
+            "sugars": 0.7,
+            "protein": 2,
+            "fat": 5.3
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Culurgiones (Sardinian ravioli)",
+            "calories": 300,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 50,
+            "sugars": 2,
+            "protein": 10,
+            "fat": 8
+          },
+          {
+            "food": "Tomato sauce",
+            "calories": 60,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 10,
+            "sugars": 6,
+            "protein": 1.5,
+            "fat": 1.5
+          },
+          {
+            "food": "Cannonau wine",
+            "calories": 85,
+            "quantity": 100,
+            "unit": "ml",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 0.1,
+            "fat": 0
+          }
+        ]
+      },
+      "totalCalories": 1285
+    },
+    "Friday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Barley coffee",
+            "calories": 10,
+            "quantity": 200,
+            "unit": "ml",
+            "carbs": 2,
+            "sugars": 0,
+            "protein": 0.5,
+            "fat": 0
+          },
+          {
+            "food": "Whole grain bread",
+            "calories": 120,
+            "quantity": 60,
+            "unit": "g",
+            "carbs": 22,
+            "sugars": 1.5,
+            "protein": 4,
+            "fat": 1
+          },
+          {
+            "food": "Fresh tomatoes with olive oil",
+            "calories": 115,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 7,
+            "sugars": 5,
+            "protein": 1.5,
+            "fat": 9.5
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Sardinian fregola with clams",
+            "calories": 320,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 45,
+            "sugars": 2,
+            "protein": 15,
+            "fat": 9
+          },
+          {
+            "food": "Fennel salad",
+            "calories": 45,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 8,
+            "sugars": 5,
+            "protein": 1.8,
+            "fat": 0.3
+          },
+          {
+            "food": "Extra virgin olive oil",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ],
+        "snack": [
+          {
+            "food": "Fresh oranges",
+            "calories": 70,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 17,
+            "sugars": 14,
+            "protein": 1.5,
+            "fat": 0.2
+          },
+          {
+            "food": "Walnuts",
+            "calories": 60,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 1.3,
+            "sugars": 0.3,
+            "protein": 1.3,
+            "fat": 6
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Grilled fish (local catch)",
+            "calories": 180,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 36,
+            "fat": 3
+          },
+          {
+            "food": "Roasted vegetables",
+            "calories": 120,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 25,
+            "sugars": 10,
+            "protein": 4,
+            "fat": 1
+          },
+          {
+            "food": "Cannonau wine",
+            "calories": 85,
+            "quantity": 100,
+            "unit": "ml",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 0.1,
+            "fat": 0
+          }
+        ]
+      },
+      "totalCalories": 1205
+    },
+    "Saturday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Sheep's milk yogurt",
+            "calories": 120,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 6,
+            "sugars": 5,
+            "protein": 8,
+            "fat": 7
+          },
+          {
+            "food": "Honey",
+            "calories": 60,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 17,
+            "sugars": 17,
+            "protein": 0,
+            "fat": 0
+          },
+          {
+            "food": "Fresh figs",
+            "calories": 60,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 12,
+            "protein": 0.8,
+            "fat": 0.3
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Pane frattau (layered bread)",
+            "calories": 280,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 40,
+            "sugars": 3,
+            "protein": 10,
+            "fat": 8
+          },
+          {
+            "food": "Tomato sauce",
+            "calories": 60,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 10,
+            "sugars": 6,
+            "protein": 1.5,
+            "fat": 1.5
+          },
+          {
+            "food": "Poached egg",
+            "calories": 70,
+            "quantity": 1,
+            "unit": "large",
+            "carbs": 0.5,
+            "sugars": 0.5,
+            "protein": 6,
+            "fat": 5
+          }
+        ],
+        "snack": [
+          {
+            "food": "Fresh peaches",
+            "calories": 60,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 14,
+            "sugars": 12,
+            "protein": 1.4,
+            "fat": 0.3
+          },
+          {
+            "food": "Almonds",
+            "calories": 90,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 3,
+            "fat": 8
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Su porcheddu (small portion, traditional)",
+            "calories": 250,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 25,
+            "fat": 16
+          },
+          {
+            "food": "Roasted potatoes with rosemary",
+            "calories": 150,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 30,
+            "sugars": 2,
+            "protein": 3,
+            "fat": 2
+          },
+          {
+            "food": "Mixed green salad",
+            "calories": 35,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 2,
+            "protein": 2,
+            "fat": 0.5
+          },
+          {
+            "food": "Cannonau wine",
+            "calories": 85,
+            "quantity": 100,
+            "unit": "ml",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 0.1,
+            "fat": 0
+          }
+        ]
+      },
+      "totalCalories": 1320
+    },
+    "Sunday": {
+      "meals": {
+        "breakfast": [
+          {
+            "food": "Sebadas (small portion, traditional)",
+            "calories": 180,
+            "quantity": 60,
+            "unit": "g",
+            "carbs": 25,
+            "sugars": 12,
+            "protein": 4,
+            "fat": 8
+          },
+          {
+            "food": "Honey",
+            "calories": 40,
+            "quantity": 10,
+            "unit": "g",
+            "carbs": 11,
+            "sugars": 11,
+            "protein": 0,
+            "fat": 0
+          },
+          {
+            "food": "Fresh ricotta",
+            "calories": 90,
+            "quantity": 75,
+            "unit": "g",
+            "carbs": 3,
+            "sugars": 1.5,
+            "protein": 7.5,
+            "fat": 6
+          }
+        ],
+        "lunch": [
+          {
+            "food": "Zuppa gallurese (bread and cheese soup)",
+            "calories": 350,
+            "quantity": 250,
+            "unit": "g",
+            "carbs": 35,
+            "sugars": 3,
+            "protein": 15,
+            "fat": 16
+          },
+          {
+            "food": "Mixed green salad",
+            "calories": 35,
+            "quantity": 100,
+            "unit": "g",
+            "carbs": 5,
+            "sugars": 2,
+            "protein": 2,
+            "fat": 0.5
+          },
+          {
+            "food": "Extra virgin olive oil",
+            "calories": 80,
+            "quantity": 10,
+            "unit": "ml",
+            "carbs": 0,
+            "sugars": 0,
+            "protein": 0,
+            "fat": 9
+          }
+        ],
+        "snack": [
+          {
+            "food": "Fresh grapes",
+            "calories": 60,
+            "quantity": 80,
+            "unit": "g",
+            "carbs": 15,
+            "sugars": 14,
+            "protein": 0.6,
+            "fat": 0.2
+          },
+          {
+            "food": "Pecorino cheese",
+            "calories": 110,
+            "quantity": 30,
+            "unit": "g",
+            "carbs": 1,
+            "sugars": 0.5,
+            "protein": 7,
+            "fat": 9
+          }
+        ],
+        "dinner": [
+          {
+            "food": "Sardinian gnocchi with tomato sauce",
+            "calories": 280,
+            "quantity": 200,
+            "unit": "g",
+            "carbs": 45,
+            "sugars": 6,
+            "protein": 8,
+            "fat": 6
+          },
+          {
+            "food": "Pecorino cheese (grated)",
+            "calories": 55,
+            "quantity": 15,
+            "unit": "g",
+            "carbs": 0.5,
+            "sugars": 0.2,
+            "protein": 3.5,
+            "fat": 4.5
+          },
+          {
+            "food": "Mixed vegetables",
+            "calories": 60,
+            "quantity": 150,
+            "unit": "g",
+            "carbs": 12,
+            "sugars": 6,
+            "protein": 3,
+            "fat": 0.5
+          },
+          {
+            "food": "Cannonau wine",
+            "calories": 85,
+            "quantity": 100,
+            "unit": "ml",
+            "carbs": 3,
+            "sugars": 1,
+            "protein": 0.1,
+            "fat": 0
+          }
+        ]
+      },
+      "totalCalories": 1425
+    }
+  },
+  "nutritionalInfo": {
+    "adultMale": {
+      "recommendedDailyIntake": 1800
+    },
+    "adultFemale": {
+      "recommendedDailyIntake": 1600
+    }
+  }
+}

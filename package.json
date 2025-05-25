@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import-diet-templates": "node --experimental-json-modules scripts/import-diet-templates.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -39,10 +40,12 @@
     "@types/react": "^18.2.67",
     "@types/react-dom": "^18.2.22",
     "autoprefixer": "^10.4.19",
+    "dotenv": "^16.5.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "uuid": "^11.1.0"
   }
 }
