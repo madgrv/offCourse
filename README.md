@@ -1,8 +1,8 @@
-# offCourse
+# Diet Tracker
 
-https://diet.offmachines.com
+> https://diet.offmachines.com
 
-## Personal Diet Tracking Application
+Personal Diet Tracking Application
 
 This is a modern web application for tracking personal diet, meals, and nutrition. The app allows users to:
 
