@@ -95,6 +95,27 @@ export function Navigation() {
           </div>
         </div>
         <div className='md:hidden border-t'>
+          {user && (
+            <div className='flex items-center justify-evenly space-x-3 mt-2 border-b pb-2'>
+              <span className='text-sm font-medium text-foreground'>
+                {user.email?.split('@')[0] || 'User'}
+              </span>
+              <Link
+                href='/profile'
+                className='text-left px-4 py-2 text-sm bg-accent rounded active:bg-accent/80'
+              >
+                {en.profile.title}
+              </Link>
+              <button
+                onClick={handleLogout}
+                className='bg-destructive text-destructive-foreground rounded px-3 py-1 text-sm font-medium hover:bg-destructive/80'
+                type='button'
+                aria-label={en.logout}
+              >
+                {en.logout}
+              </button>
+            </div>
+          )}
           <div className='flex flex-col px-2 pt-2 pb-3 space-y-2'>
             <div className='flex justify-between space-x-1'>
               {routes.map((route) => (
@@ -112,21 +133,6 @@ export function Navigation() {
                 </Link>
               ))}
             </div>
-            {user && (
-              <div className='flex items-center justify-center space-x-3 mt-2'>
-                <span className='text-sm font-medium text-foreground'>
-                  {user.email?.split('@')[0] || 'User'}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className='bg-destructive text-destructive-foreground rounded px-3 py-1 text-sm font-medium hover:bg-destructive/80'
-                  type='button'
-                  aria-label={en.logout}
-                >
-                  {en.logout}
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </nav>

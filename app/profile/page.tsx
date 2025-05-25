@@ -27,6 +27,7 @@ import {
 import { Label } from '@/app/components/ui/label';
 import { Separator } from '@/app/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/app/components/ui/radio-group';
+import en from '@/shared/language/en';
 
 export default function ProfilePage() {
   const { user } = useAuth();
@@ -93,10 +94,10 @@ export default function ProfilePage() {
       };
 
       await updateProfile(profileData);
-      alert('Profile updated successfully');
+      alert(en.profile.saveSuccess);
     } catch (error) {
       console.error('Error saving profile:', error);
-      alert('Failed to update profile');
+      alert(en.profile.saveError);
     } finally {
       setIsSaving(false);
     }
@@ -118,10 +119,10 @@ export default function ProfilePage() {
       };
 
       await updateGoals(goalData);
-      alert('Nutrition goals updated successfully');
+      alert(en.profile.saveSuccess);
     } catch (error) {
       console.error('Error saving goals:', error);
-      alert('Failed to update nutrition goals');
+      alert(en.profile.saveError);
     } finally {
       setIsSaving(false);
     }
@@ -130,15 +131,13 @@ export default function ProfilePage() {
   return (
     <ProtectedRoute>
       <DashboardLayout>
-        <div className='container mx-auto py-10'>
-          <h1 className='text-4xl font-bold mb-6'>Your Profile</h1>
-          <p className='text-lg mb-8'>
-            Manage your personal information and preferences
-          </p>
+        <div className='container mx-auto md:py-10 py-2 px-2'>
+          <h1 className='text-4xl font-bold mb-6'>{en.profile.title}</h1>
+          <p className='text-lg mb-8'>{en.profile.description}</p>
 
           {loading ? (
             <div className='flex justify-center items-center h-64'>
-              <p className='text-lg'>Loading profile data...</p>
+              <p className='text-lg'>{en.loading}</p>
             </div>
           ) : error ? (
             <div className='bg-destructive/20 p-4 rounded-md mb-8'>
@@ -147,73 +146,81 @@ export default function ProfilePage() {
           ) : (
             <Tabs defaultValue='personal' onValueChange={setActiveTab}>
               <TabsList className='flex-nowrap overflow-x-auto scrollbar-none w-full mb-2'>
-                <TabsTrigger value='personal'>Personal Information</TabsTrigger>
-                <TabsTrigger value='goals'>Nutrition Goals</TabsTrigger>
-                <TabsTrigger value='account'>Account Settings</TabsTrigger>
+                <TabsTrigger value='personal'>
+                  {en.profile.personalInfo}
+                </TabsTrigger>
+                <TabsTrigger value='goals'>
+                  {en.profile.nutritionGoals}
+                </TabsTrigger>
+                <TabsTrigger value='account'>
+                  {en.profile.accountSettings}
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value='personal'>
                 <Card>
                   <CardHeader>
-                    <CardTitle>Personal Information</CardTitle>
+                    <CardTitle>{en.profile.personalInfo}</CardTitle>
                     <CardDescription>
-                      Update your personal details
+                      {en.profile.personalInfoDesc}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <form onSubmit={handleProfileSubmit} className='space-y-6'>
                       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                         <div className='space-y-2'>
-                          <Label htmlFor='displayName'>Display Name</Label>
+                          <Label htmlFor='displayName'>
+                            {en.profile.displayName}
+                          </Label>
                           <Input
                             id='displayName'
-                            placeholder='Your display name'
+                            placeholder={en.profile.displayNamePlaceholder}
                             value={displayName}
                             onChange={(e) => setDisplayName(e.target.value)}
                           />
                         </div>
 
                         <div className='space-y-2'>
-                          <Label htmlFor='age'>Age</Label>
+                          <Label htmlFor='age'>{en.profile.age}</Label>
                           <Input
                             id='age'
                             type='number'
-                            placeholder='Your age'
+                            placeholder={en.profile.agePlaceholder}
                             value={age}
                             onChange={(e) => setAge(e.target.value)}
                           />
                         </div>
 
                         <div className='space-y-2'>
-                          <Label htmlFor='height'>Height (cm)</Label>
+                          <Label htmlFor='height'>{en.profile.height}</Label>
                           <Input
                             id='height'
                             type='number'
-                            placeholder='Your height in centimetres'
+                            placeholder={en.profile.heightPlaceholder}
                             value={height}
                             onChange={(e) => setHeight(e.target.value)}
                           />
                           <p className='text-sm text-muted-foreground'>
-                            Enter your height in centimetres
+                            {en.profile.heightDesc}
                           </p>
                         </div>
 
                         <div className='space-y-2'>
-                          <Label htmlFor='weight'>Weight (kg)</Label>
+                          <Label htmlFor='weight'>{en.profile.weight}</Label>
                           <Input
                             id='weight'
                             type='number'
-                            placeholder='Your weight in kilograms'
+                            placeholder={en.profile.weightPlaceholder}
                             value={weight}
                             onChange={(e) => setWeight(e.target.value)}
                           />
                           <p className='text-sm text-muted-foreground'>
-                            Enter your weight in kilograms
+                            {en.profile.weightDesc}
                           </p>
                         </div>
 
                         <div className='space-y-2'>
-                          <Label>Gender</Label>
+                          <Label>{en.profile.gender}</Label>
                           <RadioGroup
                             value={gender}
                             onValueChange={setGender}
@@ -221,21 +228,23 @@ export default function ProfilePage() {
                           >
                             <div className='flex items-center space-x-2'>
                               <RadioGroupItem value='male' id='male' />
-                              <Label htmlFor='male'>Male</Label>
+                              <Label htmlFor='male'>{en.profile.male}</Label>
                             </div>
                             <div className='flex items-center space-x-2'>
                               <RadioGroupItem value='female' id='female' />
-                              <Label htmlFor='female'>Female</Label>
+                              <Label htmlFor='female'>
+                                {en.profile.female}
+                              </Label>
                             </div>
                             <div className='flex items-center space-x-2'>
                               <RadioGroupItem value='other' id='other' />
-                              <Label htmlFor='other'>Other</Label>
+                              <Label htmlFor='other'>{en.profile.other}</Label>
                             </div>
                           </RadioGroup>
                         </div>
 
                         <div className='space-y-2'>
-                          <Label>Activity Level</Label>
+                          <Label>{en.profile.activityLevel}</Label>
                           <RadioGroup
                             value={activityLevel}
                             onValueChange={setActivityLevel}
@@ -246,61 +255,69 @@ export default function ProfilePage() {
                                 value='sedentary'
                                 id='sedentary'
                               />
-                              <Label htmlFor='sedentary'>Sedentary</Label>
+                              <Label htmlFor='sedentary'>
+                                {en.profile.sedentary}
+                              </Label>
                             </div>
                             <div className='flex items-center space-x-2'>
                               <RadioGroupItem value='light' id='light' />
-                              <Label htmlFor='light'>Light Activity</Label>
+                              <Label htmlFor='light'>
+                                {en.profile.lightlyActive}
+                              </Label>
                             </div>
                             <div className='flex items-center space-x-2'>
                               <RadioGroupItem value='moderate' id='moderate' />
                               <Label htmlFor='moderate'>
-                                Moderate Activity
+                                {en.profile.moderatelyActive}
                               </Label>
                             </div>
                             <div className='flex items-center space-x-2'>
                               <RadioGroupItem value='active' id='active' />
-                              <Label htmlFor='active'>Very Active</Label>
+                              <Label htmlFor='active'>
+                                {en.profile.veryActive}
+                              </Label>
                             </div>
                           </RadioGroup>
                         </div>
 
                         <div className='space-y-2'>
-                          <Label htmlFor='goal'>Fitness Goal</Label>
+                          <Label htmlFor='goal'>{en.profile.fitnessGoal}</Label>
                           <Input
                             id='goal'
-                            placeholder='Your fitness goal'
+                            placeholder={en.profile.fitnessGoalPlaceholder}
                             value={goal}
                             onChange={(e) => setGoal(e.target.value)}
                           />
                           <p className='text-sm text-muted-foreground'>
-                            For example: lose weight, gain muscle, maintain
-                            fitness
+                            {en.profile.fitnessGoalPlaceholder}
                           </p>
                         </div>
 
                         <div className='space-y-2 md:col-span-2'>
                           <Label htmlFor='dietaryRestrictions'>
-                            Dietary Restrictions
+                            {en.profile.dietaryRestrictions}
                           </Label>
                           <Input
                             id='dietaryRestrictions'
-                            placeholder='Any dietary restrictions or preferences'
+                            placeholder={
+                              en.profile.dietaryRestrictionsPlaceholder
+                            }
                             value={dietaryRestrictions}
                             onChange={(e) =>
                               setDietaryRestrictions(e.target.value)
                             }
                           />
                           <p className='text-sm text-muted-foreground'>
-                            For example: vegetarian, vegan, gluten-free,
-                            dairy-free
+                            {en.profile.dietaryRestrictionsDesc}
                           </p>
                         </div>
                       </div>
 
                       <div className='pt-4 border-t'>
                         <Button type='submit' disabled={isSaving}>
-                          {isSaving ? 'Saving...' : 'Save Changes'}
+                          {isSaving
+                            ? en.profile.saving
+                            : en.profile.saveChanges}
                         </Button>
                       </div>
                     </form>
@@ -311,9 +328,9 @@ export default function ProfilePage() {
               <TabsContent value='goals'>
                 <Card>
                   <CardHeader>
-                    <CardTitle>Nutrition Goals</CardTitle>
+                    <CardTitle>{en.profile.nutritionGoals}</CardTitle>
                     <CardDescription>
-                      Set your nutrition and fitness targets
+                      {en.profile.nutritionGoalsDesc}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -321,7 +338,7 @@ export default function ProfilePage() {
                       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                         <div className='space-y-2'>
                           <Label htmlFor='calorieGoal'>
-                            Daily Calorie Goal
+                            {en.profile.calorieGoal}
                           </Label>
                           <Input
                             id='calorieGoal'
@@ -331,13 +348,13 @@ export default function ProfilePage() {
                             onChange={(e) => setCalorieGoal(e.target.value)}
                           />
                           <p className='text-sm text-muted-foreground'>
-                            Target daily calorie intake
+                            {en.profile.calorieGoalDesc}
                           </p>
                         </div>
 
                         <div className='space-y-2'>
                           <Label htmlFor='proteinGoal'>
-                            Daily Protein Goal (g)
+                            {en.profile.proteinGoal}
                           </Label>
                           <Input
                             id='proteinGoal'
@@ -347,13 +364,13 @@ export default function ProfilePage() {
                             onChange={(e) => setProteinGoal(e.target.value)}
                           />
                           <p className='text-sm text-muted-foreground'>
-                            Target daily protein intake in grams
+                            {en.profile.proteinGoalDesc}
                           </p>
                         </div>
 
                         <div className='space-y-2'>
                           <Label htmlFor='carbGoal'>
-                            Daily Carbohydrate Goal (g)
+                            {en.profile.carbGoal}
                           </Label>
                           <Input
                             id='carbGoal'
@@ -363,12 +380,12 @@ export default function ProfilePage() {
                             onChange={(e) => setCarbGoal(e.target.value)}
                           />
                           <p className='text-sm text-muted-foreground'>
-                            Target daily carbohydrate intake in grams
+                            {en.profile.carbGoalDesc}
                           </p>
                         </div>
 
                         <div className='space-y-2'>
-                          <Label htmlFor='fatGoal'>Daily Fat Goal (g)</Label>
+                          <Label htmlFor='fatGoal'>{en.profile.fatGoal}</Label>
                           <Input
                             id='fatGoal'
                             type='number'
@@ -377,13 +394,13 @@ export default function ProfilePage() {
                             onChange={(e) => setFatGoal(e.target.value)}
                           />
                           <p className='text-sm text-muted-foreground'>
-                            Target daily fat intake in grams
+                            {en.profile.fatGoalDesc}
                           </p>
                         </div>
 
                         <div className='space-y-2'>
                           <Label htmlFor='planDuration'>
-                            Plan Duration (days)
+                            {en.profile.planDuration}
                           </Label>
                           <Input
                             id='planDuration'
@@ -393,14 +410,16 @@ export default function ProfilePage() {
                             onChange={(e) => setPlanDuration(e.target.value)}
                           />
                           <p className='text-sm text-muted-foreground'>
-                            Duration of your nutrition plan in days
+                            {en.profile.planDurationDesc}
                           </p>
                         </div>
                       </div>
 
                       <div className='pt-4 border-t'>
                         <Button type='submit' disabled={isSaving}>
-                          {isSaving ? 'Saving...' : 'Save Goals'}
+                          {isSaving
+                            ? en.profile.saving
+                            : en.profile.saveChanges}
                         </Button>
                       </div>
                     </form>
@@ -411,15 +430,17 @@ export default function ProfilePage() {
               <TabsContent value='account'>
                 <Card>
                   <CardHeader>
-                    <CardTitle>Account Settings</CardTitle>
+                    <CardTitle>{en.profile.accountSettings}</CardTitle>
                     <CardDescription>
-                      Manage your account preferences
+                      {en.profile.accountSettingsDesc}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className='space-y-4'>
                       <div>
-                        <h3 className='text-lg font-medium'>Email Address</h3>
+                        <h3 className='text-lg font-medium'>
+                          {en.profile.email}
+                        </h3>
                         <p className='text-sm text-muted-foreground'>
                           {user?.email}
                         </p>
@@ -428,21 +449,29 @@ export default function ProfilePage() {
                       <Separator className='my-4' />
 
                       <div>
-                        <h3 className='text-lg font-medium'>Password</h3>
+                        <h3 className='text-lg font-medium'>
+                          {en.profile.password}
+                        </h3>
                         <p className='text-sm text-muted-foreground mb-4'>
-                          Change your password to keep your account secure
+                          {en.profile.passwordDesc}
                         </p>
-                        <Button variant='outline'>Change Password</Button>
+                        <Button variant='outline'>
+                          {en.profile.changePassword}
+                        </Button>
                       </div>
 
                       <Separator className='my-4' />
 
                       <div>
-                        <h3 className='text-lg font-medium'>Danger Zone</h3>
+                        <h3 className='text-lg font-medium'>
+                          {en.profile.dangerZone}
+                        </h3>
                         <p className='text-sm text-muted-foreground mb-4'>
-                          Permanently delete your account and all of your data
+                          {en.profile.dangerZoneDesc}
                         </p>
-                        <Button variant='destructive'>Delete Account</Button>
+                        <Button variant='destructive'>
+                          {en.profile.deleteAccount}
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
