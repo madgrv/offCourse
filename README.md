@@ -1,4 +1,6 @@
-# Diet Tracker
+# offCourse
+
+## Diet Tracker
 
 > https://diet.offmachines.com
 
