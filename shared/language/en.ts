@@ -13,13 +13,16 @@ const en = {
     saturday: 'Saturday',
     sunday: 'Sunday',
     // Error messages
-    errorUpdatingFoodItem: "There was an error updating the food item.",
-    errorInsertingFoodItem: "There was an error adding a new food item.",
-    errorUpdatingMealCompletion: "There was an error updating meal completion status.",
-    errorUpdatingFoodCompletion: "There was an error updating food completion status.",
-    waitingForData: "Please wait while your diet plan data is loading...",
-    missingData: "Unable to perform this action. Your diet plan or user data is not available.",
-    actionInProgress: "This action is already in progress. Please wait...",
+    errorUpdatingFoodItem: 'There was an error updating the food item.',
+    errorInsertingFoodItem: 'There was an error adding a new food item.',
+    errorUpdatingMealCompletion:
+      'There was an error updating meal completion status.',
+    errorUpdatingFoodCompletion:
+      'There was an error updating food completion status.',
+    waitingForData: 'Please wait while your diet plan data is loading...',
+    missingData:
+      'Unable to perform this action. Your diet plan or user data is not available.',
+    actionInProgress: 'This action is already in progress. Please wait...',
     // Titles and descriptions
     defaultTitle: 'Weekly Diet Plan',
     defaultDescription: 'Your personalised nutrition plan',
@@ -43,23 +46,28 @@ const en = {
   // --- Auth & Login ---
   password: 'Password',
   forgotPassword: 'Forgot password?',
-  resetEmailSent: 'If this email is registered, a password reset link has been sent.',
+  resetEmailSent:
+    'If this email is registered, a password reset link has been sent.',
   sending: 'Sending...',
   sendResetLink: 'Send reset link',
   email: 'Email',
   emailAddress: 'Email Address',
   resetPasswordTitle: 'Reset Your Password',
-  resetPasswordInstructions: 'Enter the email address associated with your account, and we\'ll send you a link to reset your password.',
+  resetPasswordInstructions:
+    "Enter the email address associated with your account, and we'll send you a link to reset your password.",
   rememberPassword: 'Remember your password?',
   backToLogin: 'Back to Login',
   returnToLogin: 'Return to login',
-  resetPasswordSuccess: 'If your email is registered, a password reset link has been sent. Please check your inbox and spam folder.',
+  resetPasswordSuccess:
+    'If your email is registered, a password reset link has been sent. Please check your inbox and spam folder.',
   passwordResetSuccess: 'Your password has been reset successfully',
   passwordResetFailed: 'Failed to reset password',
   passwordsDoNotMatch: 'Passwords do not match',
   passwordTooShort: 'Password must be at least 6 characters long',
-  invalidResetLink: 'Invalid password reset link. Please request a new password reset email.',
-  resetLinkInfo: 'This page is only accessible via a password reset email link.',
+  invalidResetLink:
+    'Invalid password reset link. Please request a new password reset email.',
+  resetLinkInfo:
+    'This page is only accessible via a password reset email link.',
   newPassword: 'New Password',
   confirmNewPassword: 'Confirm New Password',
   resetPasswordButton: 'Reset Password',
@@ -67,9 +75,9 @@ const en = {
   unexpectedError: 'An unexpected error occurred',
   loginButton: 'Login',
   loggingIn: 'Logging in...',
-  dontHaveAccount: 'Don\'t have an account?',
+  dontHaveAccount: "Don't have an account?",
   register: 'Register',
-  loginToApp: 'Login to Teo\'s Diet App',
+  loginToApp: "Login to Teo's Diet App",
   weeklyDietPlan: 'Weekly Diet Plan',
   dailyTotal: 'Daily Total:',
   total: 'Total:',
@@ -94,7 +102,8 @@ const en = {
   mealCompleted: 'Meal completed',
   adjustMeal: 'Adjust meal',
   caloriesEaten: 'Calories',
-  registrationSuccess: 'Registration successful! Please check your email to verify your account.',
+  registrationSuccess:
+    'Registration successful! Please check your email to verify your account.',
   loginSuccess: 'Login successful! Redirecting...',
   logout: 'Logout',
   selectDietPlan: 'Select a diet plan',
@@ -104,10 +113,11 @@ const en = {
   loading: 'Loading…',
   failedToFetchTemplates: 'Failed to fetch diet templates.',
   cloneFailed: 'Failed to clone diet plan.',
-  trackDietIntro: 'Track your diet and nutrition with this interactive application.',
+  trackDietIntro:
+    'Track your diet and nutrition with this interactive application.',
   // --- Home Page ---
   home: {
-    title: 'Teo\'s Diet App',
+    title: 'Diet Helper',
     userProfile: 'User Profile',
     accountInfo: 'Your account information',
     signedIn: 'Signed in',
@@ -130,12 +140,13 @@ const en = {
     daysLeft: 'Days Left',
     daysDesc: 'Time remaining in your plan',
     daysPreview: 'Days left preview',
-    viewProgress: 'View Progress'
+    viewProgress: 'View Progress',
   },
   // --- Profile Page ---
   profile: {
     title: 'Your Profile',
-    description: 'Manage your personal information, goals, and account settings.',
+    description:
+      'Manage your personal information, goals, and account settings.',
     personalInfo: 'Personal Information',
     personalInfoDesc: 'Your basic information and biometric data',
     goals: 'Goals',
@@ -196,8 +207,8 @@ const en = {
     saveChanges: 'Save Changes',
     saving: 'Saving...',
     saveSuccess: 'Changes saved successfully!',
-    saveError: 'Error saving changes. Please try again.'
-  }
+    saveError: 'Error saving changes. Please try again.',
+  },
 };
 
 export default en;

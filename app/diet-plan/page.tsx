@@ -51,7 +51,7 @@ export default function DietPlanPage() {
     return (
       <ProtectedRoute>
         <DashboardLayout>
-          <div className='container mx-auto px-4 py-8'>
+          <div className='container mx-auto px-4'>
             <h1 className='text-3xl font-bold mb-2'>
               {en.dietPlan.defaultTitle}
             </h1>
@@ -96,11 +96,11 @@ export default function DietPlanPage() {
   return (
     <ProtectedRoute>
       <DashboardLayout>
-        <div className='container mx-auto px-4 py-8'>
+        <div className='container mx-auto px-4'>
           <h1 className='text-3xl font-bold mb-2'>
             {dietPlan.planName || en.dietPlan.defaultTitle}
           </h1>
-          <Tabs defaultValue={defaultTab}>
+          <Tabs defaultValue={defaultTab} className='mb-4'>
             <TabsList className='flex-nowrap overflow-x-auto scrollbar-none w-full'>
               {days.map((day) => (
                 <TabsTrigger key={day} value={day}>

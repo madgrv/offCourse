@@ -34,7 +34,7 @@ export default function AnalyticsPage() {
   if (loading || !dietPlan) {
     return (
       <DashboardLayout>
-        <div className='container mx-auto px-4 py-8'>
+        <div className='container mx-auto px-4'>
           <Skeleton className='h-10 w-1/3 mb-6' />
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
             {Array.from({ length: 3 }).map((_, i) => (
@@ -49,7 +49,7 @@ export default function AnalyticsPage() {
   if (error) {
     return (
       <DashboardLayout>
-        <div className='container mx-auto px-4 py-8'>
+        <div className='container mx-auto px-4'>
           <h1 className='text-3xl font-bold mb-6'>Error Loading Analytics</h1>
           <div className='p-6 bg-red-50 text-red-800 rounded-lg'>
             <p>{error}</p>
@@ -88,8 +88,9 @@ export default function AnalyticsPage() {
   return (
     <ProtectedRoute>
       <DashboardLayout>
-        <div className='container mx-auto px-4 py-8'>
-          <h1 className='text-3xl font-bold mb-6'>Nutrition Analytics</h1>
+        <div className='container mx-auto px-4'>
+          <h1 className='text-3xl font-bold mb-2'>Nutrition Analytics</h1>
+          <p className='text-lg mb-4'>Coming soon!</p>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
             <Card>
               <CardHeader>
