@@ -25,10 +25,9 @@ const supabaseAdmin = supabaseServiceKey
 
 export async function POST(req: NextRequest) {
   try {
-    let templateId;
+    let requestBody;
     try {
-      const body = await req.json();
-      templateId = body.templateId;
+      requestBody = await req.json();
     } catch (parseError) {
       return NextResponse.json(
         {
@@ -38,6 +37,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    
+    const { templateId, force = false } = requestBody;
 
     if (!templateId) {
       return NextResponse.json(
@@ -90,6 +91,29 @@ export async function POST(req: NextRequest) {
 
     // Using admin client to bypass RLS if available
     const dbClient = supabaseAdmin || supabase;
+    
+    // Check if user already has a diet plan
+    const { data: existingPlans, error: existingPlanError } = await dbClient
+      .from('diet_plans')
+      .select('id, name, description')
+      .eq('owner_id', user.id)
+      .eq('is_template', false)
+      .order('created_at', { ascending: false });
+      
+    const hasExistingPlan = existingPlans && existingPlans.length > 0;
+    const existingPlanId = hasExistingPlan ? existingPlans[0].id : null;
+    
+    // We already have the force flag from the request body
+    
+    // If user has a plan and force is false, return info about existing plan
+    if (hasExistingPlan && !force) {
+      return NextResponse.json({
+        success: true,
+        hasExistingPlan: true,
+        existingPlan: existingPlans[0],
+        message: 'User already has a diet plan. Set force=true to override.'
+      });
+    }
 
     const { data: template, error: templateError } = await dbClient
       .from('diet_plans')

@@ -14,19 +14,25 @@ export interface FoodItem {
   fat?: number; // Fat in grams
 }
 
+// Meal structure with support for two-week plan
+export interface TwoWeekMeal {
+  week1: FoodItem[];
+  week2: FoodItem[];
+}
+
 // Meal structure (breakfast, lunch, snack, dinner)
 export interface Meal {
   [key: string]: FoodItem[];
 }
 
-// Daily diet structure
+// Daily diet structure with support for two-week plan
 export interface DayDiet {
   meals: {
-    breakfast?: FoodItem[];
-    lunch?: FoodItem[];
-    snack?: FoodItem[];
-    dinner?: FoodItem[];
-    [mealType: string]: FoodItem[] | undefined;
+    breakfast?: FoodItem[] | TwoWeekMeal;
+    lunch?: FoodItem[] | TwoWeekMeal;
+    snack?: FoodItem[] | TwoWeekMeal;
+    dinner?: FoodItem[] | TwoWeekMeal;
+    [mealType: string]: FoodItem[] | TwoWeekMeal | undefined;
   };
   totalCalories?: number;
 }
@@ -70,6 +76,7 @@ export interface DietData {
   };
   planName?: string;
   planDescription?: string;
+  startDate?: string; // ISO string date when the plan was created
   nutritionalInfo?: NutritionalInfo;
   foodReference?: FoodReference;
 }

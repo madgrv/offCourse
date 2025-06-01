@@ -16,10 +16,13 @@ export async function saveMealFoodItems({
 }: {
   dietPlanId: string;
   userId: string;
-  day: string;
+  day: string; // Now accepts week-prefixed format like 'week1_Monday'
   mealType: string;
   foodItems: FoodItem[];
 }) {
+  // Extract actual day and week from week-prefixed format if needed
+  const actualDay = day.includes('_') ? day.split('_')[1] : day;
+  const weekNumber = day.startsWith('week2_') ? 2 : 1;
   for (const foodItem of foodItems) {
     if (foodItem.id) {
 
@@ -45,7 +48,8 @@ export async function saveMealFoodItems({
       const { error } = await supabase.from('diet_food_items').insert({
         diet_plan_id: dietPlanId,
         user_id: userId,
-        day,
+        day: actualDay,
+        week: weekNumber,
         meal_type: mealType,
         food_name: foodItem.food,
         calories: foodItem.calories,
@@ -73,10 +77,13 @@ export async function setMealCompletion({
 }: {
   userId: string;
   dietPlanId: string;
-  day: string;
+  day: string; // Now accepts week-prefixed format like 'week1_Monday'
   mealType: string;
   completed: boolean;
 }) {
+  // Extract actual day from week-prefixed format if needed
+  const actualDay = day.includes('_') ? day.split('_')[1] : day;
+  const weekNumber = day.startsWith('week2_') ? 2 : 1;
   try {
     // API call for meal completion
     

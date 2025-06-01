@@ -5,6 +5,14 @@ import { createClient } from '@supabase/supabase-js';
 import { Button } from '@/app/components/ui/button';
 import Select from '@/app/components/ui/select';
 import en from '@/shared/language/en';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/app/components/ui/dialog';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -26,6 +34,11 @@ export default function DietPlanSelector({
   const [cloning, setCloning] = React.useState(false);
   const [user, setUser] = React.useState<any>(null);
   const [authChecked, setAuthChecked] = React.useState(false);
+  
+  // State for the existing plan dialog
+  const [showExistingPlanDialog, setShowExistingPlanDialog] = React.useState(false);
+  const [existingPlan, setExistingPlan] = React.useState<any>(null);
+  const [templateIdToClone, setTemplateIdToClone] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     async function checkAuth() {
@@ -119,11 +132,81 @@ export default function DietPlanSelector({
 
       if (!result.success) {
         setError(result.error || en.cloneFailed);
-
-        if (result.errors) {
-        }
+      } else if (result.hasExistingPlan) {
+        // User already has a plan, show dialog to confirm overwrite
+        setExistingPlan(result.existingPlan);
+        setTemplateIdToClone(templateIdToSend);
+        setShowExistingPlanDialog(true);
+        setCloning(false);
       } else {
+        // No existing plan, proceed with redirect
         onPlanSelected();
+      }
+    } catch (err: any) {
+      setError(`${en.cloneFailed} ${err.message ? `(${err.message})` : ''}`);
+    } finally {
+      setCloning(false);
+    }
+  }
+  
+  // Handle keeping the existing plan
+  const handleKeepExisting = async () => {
+    setShowExistingPlanDialog(false);
+    
+    if (!existingPlan?.id) {
+      console.error('No existing plan ID found');
+      setError('Could not find existing plan details');
+      return;
+    }
+    
+    try {
+      // Set a cookie with the selected plan ID
+      document.cookie = `selected_diet_plan_id=${existingPlan.id}; path=/; max-age=31536000`; // 1 year
+      
+      // Force a complete page reload with the plan ID
+      // The replace method prevents back-button issues
+      window.location.replace(`/diet-plan?planId=${existingPlan.id}&forceLoad=true`);
+    } catch (err: any) {
+      console.error('Error selecting plan:', err);
+      setError(`Failed to select plan: ${err.message || ''}`);
+    }
+  };
+  
+  // Handle resetting to the template
+  const handleResetToTemplate = async () => {
+    if (!templateIdToClone) return;
+    
+    setCloning(true);
+    setShowExistingPlanDialog(false);
+    
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      
+      if (!accessToken) {
+        setError(en.cloneAuthRequired || 'Authentication required');
+        return;
+      }
+      
+      const res = await fetch('/api/diet/clone', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        credentials: 'include',
+        body: JSON.stringify({ 
+          templateId: templateIdToClone,
+          force: true // Force overwrite of existing plan
+        }),
+      });
+      
+      const result = await res.json();
+      
+      if (!result.success) {
+        setError(result.error || en.cloneFailed);
+      } else {
+        onPlanSelected(); // Redirect to diet plan page
       }
     } catch (err: any) {
       setError(`${en.cloneFailed} ${err.message ? `(${err.message})` : ''}`);
@@ -183,6 +266,33 @@ export default function DietPlanSelector({
               )}
             </>
           )}
+          
+          {/* Dialog for existing plan confirmation */}
+          <Dialog open={showExistingPlanDialog} onOpenChange={setShowExistingPlanDialog}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Existing Diet Plan Found</DialogTitle>
+                <DialogDescription>
+                  You already have a diet plan &ldquo;{existingPlan?.name}&rdquo;. Would you like to keep your existing plan or reset to the template?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="flex justify-between sm:justify-between">
+                <Button 
+                  variant="outline" 
+                  onClick={handleKeepExisting}
+                >
+                  Keep & View Existing Plan
+                </Button>
+                <Button 
+                  variant="default"
+                  onClick={handleResetToTemplate}
+                  className="ml-2"
+                >
+                  Reset to Template
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </>
       )}
     </div>

@@ -6,7 +6,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/app/components/ui/card';
-import { FoodItem } from '@/app/lib/types';
+import { FoodItem, TwoWeekMeal } from '@/app/lib/types';
 import { Button } from '@/app/components/ui/button';
 import { Badge } from '@/app/components/ui/badge'; // Import shadcn badge for calories chip
 import { Input } from '@/app/components/ui/input';
@@ -32,7 +32,7 @@ import en from '@/shared/language/en';
 interface MealCardProps {
   title: string;
   mealType: string;
-  foodItems: FoodItem[];
+  foodItems: FoodItem[] | TwoWeekMeal;
   totalCalories?: number;
   completed?: boolean;
   onComplete?: (completed: boolean) => void;
@@ -55,6 +55,17 @@ interface MealCardProps {
   day: string;
 }
 
+// Helper function to process foodItems which could be FoodItem[] or TwoWeekMeal
+const processFoodItems = (items: FoodItem[] | TwoWeekMeal, selectedWeek?: number): FoodItem[] => {
+  if (Array.isArray(items)) {
+    return items;
+  } else if (items && typeof items === 'object') {
+    // It's a TwoWeekMeal object
+    return selectedWeek === 2 ? items.week2 : items.week1;
+  }
+  return [];
+};
+
 export function MealCard({
   title,
   mealType,
@@ -72,8 +83,15 @@ export function MealCard({
   isCompletionInFlight,
   day,
 }: MealCardProps) {
+  // Extract the current week from the day string if it contains 'week'
+  const weekMatch = day && day.match(/week(\d+)_/);
+  const currentWeek = weekMatch ? parseInt(weekMatch[1]) : 1;
+  
+  // Process the foodItems to ensure we're working with FoodItem[]
+  const processedFoodItems = processFoodItems(foodItems, currentWeek);
+  
   const [internalIsEditing, setInternalIsEditing] = React.useState(false);
-  const [editItems, setEditItems] = React.useState<FoodItem[]>(foodItems);
+  const [editItems, setEditItems] = React.useState<FoodItem[]>(processedFoodItems);
   const [expandedItems, setExpandedItems] = React.useState<
     Record<number, boolean>
   >({});
@@ -82,8 +100,8 @@ export function MealCard({
     externalIsEditing !== undefined ? externalIsEditing : internalIsEditing;
 
   React.useEffect(() => {
-    setEditItems(foodItems);
-  }, [foodItems, isEditing]);
+    setEditItems(processedFoodItems);
+  }, [processedFoodItems, currentWeek, isEditing]);
 
   const toggleItemExpanded = (index: number) => {
     setExpandedItems((prev) => ({
@@ -97,7 +115,7 @@ export function MealCard({
   };
 
   const handleFoodItemComplete = (idx: number, isCompleted: boolean) => {
-    const updatedItems = foodItems.map((item, i) =>
+    const updatedItems = processedFoodItems.map((item: FoodItem, i: number) =>
       i === idx ? { ...item, completed: isCompleted } : item
     );
     setEditItems(updatedItems);
@@ -122,7 +140,7 @@ export function MealCard({
 
   const handleCancel = () => {
     setInternalIsEditing(false);
-    setEditItems(foodItems); // Reset to original items
+    setEditItems(processedFoodItems); // Reset to original items
   };
 
   const handleItemChange = (
@@ -371,7 +389,7 @@ export function MealCard({
           </div>
         ) : (
           <ul className='space-y-4'>
-            {foodItems.map((item, index) => {
+            {processedFoodItems.map((item: FoodItem, index: number) => {
               // Use mealType (not title) for key generation to match action logic
               const foodKey =
                 day && mealType !== undefined
