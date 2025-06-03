@@ -197,7 +197,8 @@ const en = {
     saving: 'Saving...',
     saveSuccess: 'Changes saved successfully!',
     saveError: 'Error saving changes. Please try again.'
-  }
+  },
+  duplicatePlanName: 'A plan with this name already exists.',
 };
 
 export default en;

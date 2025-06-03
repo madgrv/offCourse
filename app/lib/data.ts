@@ -1,15 +1,11 @@
 import { DietData } from './types';
+import { supabase } from './supabaseClient';
 
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Using the centralized Supabase client from supabaseClient.ts
 
 // Function to load diet data from Supabase (client-side compatible)
-export async function getDietData(specificPlanId?: string): Promise<DietData> {
-  console.log('getDietData called with specificPlanId:', specificPlanId);
+export async function getDietData(specificPlanId?: string, includeTemplates: boolean = false): Promise<DietData> {
+
   try {
     // Check authentication
     const { data: sessionData } = await supabase.auth.getSession();
@@ -19,20 +15,23 @@ export async function getDietData(specificPlanId?: string): Promise<DietData> {
     
     const userId = sessionData.session.user.id;
     
-    
     // Check for a specific plan ID first (from cookie or URL parameter)
     let dietPlanQuery = supabase
       .from('diet_plans')
-      .select('id, name, description')
-      .eq('owner_id', userId)
-      .eq('is_template', false);
+      .select('id, name, description, created_at, is_template')
+      .eq('owner_id', userId);
+      
+    // Only filter out templates if not explicitly including them
+    if (!includeTemplates) {
+      dietPlanQuery = dietPlanQuery.eq('is_template', false);
+    }
       
     // If a specific plan ID is provided, use it
     if (specificPlanId) {
-      console.log('Fetching specific diet plan with ID:', specificPlanId);
+
       dietPlanQuery = dietPlanQuery.eq('id', specificPlanId);
     } else {
-      console.log('No specific plan ID provided, fetching most recent plan');
+
       // Otherwise get the most recent plan
       dietPlanQuery = dietPlanQuery.order('created_at', { ascending: false }).limit(1);
     }
@@ -40,7 +39,7 @@ export async function getDietData(specificPlanId?: string): Promise<DietData> {
     // Execute the query
     const { data: dietPlans, error: plansError } = await dietPlanQuery;
     
-    console.log('Diet plans query result:', dietPlans);
+
     
     if (plansError) {
       console.error('Error fetching diet plans:', plansError);
@@ -50,229 +49,187 @@ export async function getDietData(specificPlanId?: string): Promise<DietData> {
     if (!dietPlans || dietPlans.length === 0) {
       console.warn('No diet plan found for user');
       // Return empty diet data structure with a message
-      return { 
+      return {
         days: {},
         planName: 'No Diet Plan Found',
-        planDescription: 'You haven\'t created a diet plan yet. Go to the home page to select a template and create your personalised diet plan.'
+        planDescription: 'You haven\'t created a diet plan yet. Go to the home page to select a template and create your personalised diet plan.',
+        isDefaultStructure: true
       };
     }
     
-    const dietPlanId = dietPlans[0].id;
-    
-    
-    // Fetch all days for this diet plan
-    const { data: days, error: daysError } = await supabase
-      .from('diet_days')
-      .select('id, day_of_week, total_calories')
-      .eq('diet_plan_id', dietPlanId);
-    
-    if (daysError) {
-      console.error('Error fetching diet days:', daysError);
-      throw new Error(`Failed to fetch diet days: ${daysError.message}`);
-    }
-    
-    // Fetch the diet plan start date to calculate current week
-    const { data: planData, error: planError } = await supabase
+    // Fetch the diet plan and all its nested data in a single query
+
+    const { data: dietPlansWithDetails, error: plansWithDetailsError } = await supabase
       .from('diet_plans')
-      .select('created_at')
-      .eq('id', dietPlanId)
-      .single();
-      
-    if (planError) {
-      console.error('Error fetching diet plan start date:', planError);
-      // Continue without the start date, we'll default to week 1
+      .select(`
+        id,
+        name,
+        description,
+        created_at,
+        is_template,
+        plan_weeks (
+          id,
+          week_number,
+          diet_days (
+            id,
+            day_of_week,
+            day_meals (
+              id,
+              meal_type,
+              diet_meal_id,
+              meal_food_items (
+                id,
+                quantity,
+                food_items (
+                  id,
+                  food_name,
+                  calories,
+                  carbohydrates,
+                  protein,
+                  fat,
+                  sugars,
+                  unit
+                )
+              )
+            )
+          )
+        )
+      `)
+      .eq('owner_id', userId)
+
+      .order('week_number', { foreignTable: 'plan_weeks' })
+      .order('day_of_week', { foreignTable: 'plan_weeks.diet_days' })
+      .order('meal_type', { foreignTable: 'plan_weeks.diet_days.day_meals' });
+
+    if (plansWithDetailsError) {
+      console.error('Error fetching diet plans with details:', plansWithDetailsError);
+      throw new Error(`Failed to fetch diet plans with details: ${plansWithDetailsError.message}`);
     }
-    
-    // Initialize the diet data structure
-    const dietData: DietData = { 
-      id: dietPlanId,
-      days: {},
-      planName: dietPlans[0].name,
-      planDescription: dietPlans[0].description || '',
-      startDate: planData?.created_at || new Date().toISOString()
-    };
-    
-    // Process each day
-    
-    for (const day of days || []) {
-      // Fetch meals for this day
-      
-      const { data: meals, error: mealsError } = await supabase
-        .from('diet_meals')
-        .select('id, meal_type')
-        .eq('diet_day_id', day.id);
-      
-      if (mealsError) {
-        console.error(`Error fetching meals for day ${day.day_of_week}:`, mealsError);
-        continue;
-      }
-      
-      
-      // Initialize the day structure
-      dietData.days[day.day_of_week] = {
-        meals: {}
+
+    let dietPlan: any;
+    if (specificPlanId) {
+      dietPlan = dietPlansWithDetails?.find(plan => plan.id === specificPlanId);
+    } else {
+
+      const nonTemplatePlans = dietPlansWithDetails?.filter(plan => !plan.is_template);
+      dietPlan = nonTemplatePlans?.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
+    }
+
+    if (!dietPlan) {
+      console.warn('No diet plan found for user or specific ID');
+      return {
+        days: {},
+        planName: 'No Diet Plan Found',
+        planDescription: 'You haven\'t created a diet plan yet. Go to the home page to select a template and create your personalised diet plan.',
+        isDefaultStructure: true
       };
-      
-      // Process each meal
-      for (const meal of meals || []) {
-        // Check if the database has been migrated to support the two-week plan
-        // First, try to get all food items for this meal without week filter
-        const { data: allFoodItems, error: foodError } = await supabase
-          .from('diet_food_items')
-          .select('id, food_name, calories, carbohydrates, protein, fat, sugars, quantity, unit, completed, week')
-          .eq('diet_meal_id', meal.id);
-        
-        if (foodError) {
-          // If error contains 'column diet_food_items.week does not exist', the migration hasn't been run
-          if (foodError.message?.includes('column diet_food_items.week does not exist')) {
-            // Database not migrated yet, get food items without week filter
-            const { data: legacyFoodItems, error: legacyError } = await supabase
-              .from('diet_food_items')
-              .select('id, food_name, calories, carbohydrates, protein, fat, sugars, quantity, unit, completed')
-              .eq('diet_meal_id', meal.id);
-              
-            if (legacyError) {
-              console.error(`Error fetching food items for meal ${meal.meal_type}:`, legacyError);
-              continue;
-            }
-            
-            // Treat all items as week 1 items in non-migrated database
-            const week1FoodItems = legacyFoodItems || [];
-            const week2FoodItems: typeof week1FoodItems = []; // Empty for week 2
-            
-            // Process as normal with these items
-            dietData.days[day.day_of_week] = dietData.days[day.day_of_week] || { meals: {} };
-            dietData.days[day.day_of_week].meals[meal.meal_type] = {
-              week1: week1FoodItems.map(item => ({
-                id: item.id,
-                food: item.food_name,
-                calories: item.calories,
-                carbs: item.carbohydrates,
-                protein: item.protein,
-                fat: item.fat,
-                sugars: item.sugars,
-                quantity: item.quantity,
-                unit: item.unit,
-                completed: item.completed
-              })),
-              week2: week2FoodItems.map(item => ({
-                id: item.id,
-                food: item.food_name,
-                calories: item.calories,
-                carbs: item.carbohydrates,
-                protein: item.protein,
-                fat: item.fat,
-                sugars: item.sugars,
-                quantity: item.quantity,
-                unit: item.unit,
-                completed: item.completed
-              }))
-            };
-            
-            continue; // Skip the rest of this iteration
-          } else {
-            console.error(`Error fetching food items for meal ${meal.meal_type}:`, foodError);
-            continue;
-          }
-        }
-        
-        // If we got here, the database has been migrated
-        // Separate items by week
-        const week1FoodItems = allFoodItems?.filter(item => !item.week || item.week === 1) || [];
-        const week2FoodItems = allFoodItems?.filter(item => item.week === 2) || [];
-        
-        // Map the week 1 food items to the expected format
-        const formattedWeek1FoodItems = (week1FoodItems || []).map(item => {
-          // Use the quantity and unit directly from the database
-          // If they're not available, provide sensible defaults
-          return {
-            id: item.id,
-            food: item.food_name,
-            calories: item.calories,
-            quantity: item.quantity || 1,
-            unit: item.unit || 'g',
-            completed: item.completed || false,
-            // Store both total carbs and sugars separately as per project requirements
-            carbs: item.carbohydrates || 0,
-            sugars: item.sugars || 0,
-            protein: item.protein || 0,
-            fat: item.fat || 0
-          };
-        });
-        
-        // Map the week 2 food items to the expected format
-        const formattedWeek2FoodItems = (week2FoodItems || []).map(item => {
-          return {
-            id: item.id,
-            food: item.food_name,
-            calories: item.calories,
-            quantity: item.quantity || 1,
-            unit: item.unit || 'g',
-            completed: item.completed || false,
-            carbs: item.carbohydrates || 0,
-            sugars: item.sugars || 0,
-            protein: item.protein || 0,
-            fat: item.fat || 0
-          };
-        });
-        
-        
-        
-        // Add the meals to the day for both weeks using the week-prefixed format
-        if (!dietData.days[day.day_of_week]) {
-          dietData.days[day.day_of_week] = { meals: {} };
-        }
-        
-        // Create week-prefixed day keys
-        const week1Day = `week1_${day.day_of_week}`;
-        const week2Day = `week2_${day.day_of_week}`;
-        
-        // Initialize the week-prefixed days if they don't exist
-        if (!dietData.days[week1Day]) {
-          dietData.days[week1Day] = { meals: {} };
-        }
-        if (!dietData.days[week2Day]) {
-          dietData.days[week2Day] = { meals: {} };
-        }
-        
-        // Add the meals to the week-prefixed days
-        dietData.days[week1Day].meals[meal.meal_type] = formattedWeek1FoodItems;
-        dietData.days[week2Day].meals[meal.meal_type] = formattedWeek2FoodItems;
-        
-        // Also keep the original day format for backward compatibility
-        dietData.days[day.day_of_week].meals[meal.meal_type] = formattedWeek1FoodItems;
-        
-      }
     }
-    
-    
+
+    const dietData: DietData = {
+      id: dietPlan.id,
+      days: {},
+      planName: dietPlan.name,
+      planDescription: dietPlan.description || '',
+      startDate: dietPlan.created_at || new Date().toISOString(),
+    };
+
+    // Process the fetched detailed data
+    dietPlan.plan_weeks.forEach((week: any) => {
+      week.diet_days.forEach((day: any) => {
+        const dayKey = `week${week.week_number}_${day.day_of_week}`;
+        dietData.days[dayKey] = dietData.days[dayKey] || { meals: {} };
+
+        day.day_meals.forEach((meal: any) => {
+          type ProcessedFoodItem = {
+            id?: string;
+            food: string;
+            calories: number;
+            carbs: number;
+            protein: number;
+            fat: number;
+            sugars: number;
+            quantity: number;
+            unit: string;
+            completed: boolean;
+          };
+
+          const foodItems: ProcessedFoodItem[] = (meal.meal_food_items || []).map((item: any) => {
+            const foodItem = item.food_items;
+            return {
+              id: item.id,
+              food: foodItem?.food_name || 'Unknown food',
+              calories: Number(foodItem?.calories) || 0,
+              carbs: Number(foodItem?.carbohydrates) || 0,
+              protein: Number(foodItem?.protein) || 0,
+              fat: Number(foodItem?.fat) || 0,
+              sugars: Number(foodItem?.sugars) || 0,
+              quantity: Number(item.quantity) || 1,
+              unit: foodItem?.unit || 'g',
+              completed: item.completed || false,
+            };
+          });
+
+          let normalizedMealType = meal.meal_type.toLowerCase();
+          if (normalizedMealType === 'snacks') {
+            normalizedMealType = 'snack';
+          }
+          dietData.days[dayKey].meals[normalizedMealType] = foodItems;
+        });
+      });
+    });
+
+    // If no days were found for any week, and it's not a default structure, create a default structure
+    if (Object.keys(dietData.days).length === 0) {
+      console.warn('No days found for any week - creating default structure');
+      const defaultDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const defaultMealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+
+      [1, 2].forEach(weekNum => {
+        defaultDays.forEach(day => {
+          const weekDayKey = `week${weekNum}_${day}`;
+          dietData.days[weekDayKey] = {
+            meals: {},
+          };
+          defaultMealTypes.forEach(mealType => {
+            dietData.days[weekDayKey].meals[mealType] = [];
+          });
+        });
+      });
+      dietData.isDefaultStructure = true;
+
+    }
+
+
     return dietData;
+
   } catch (error) {
-    console.error('Error loading diet data:', error);
-    throw new Error('Failed to load diet data');
+    console.error('Error in getDietData:', error);
+    throw error;
   }
 }
 
 // Function to calculate total calories for a meal
-export function calculateMealCalories(foodItems: { food: string; calories: number | null }[]): number {
+export function calculateMealCalories(foodItems: any[]): number {
   return foodItems.reduce((total, item) => total + (item.calories || 0), 0);
 }
 
 // Function to get day name from index
 export function getDayName(index: number): string {
-  const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   return days[index % 7];
 }
 
 // Function to format day name for display
 export function formatDayName(day: string): string {
-  return day.charAt(0).toUpperCase() + day.slice(1);
+  return day.charAt(0).toUpperCase() + day.slice(1).toLowerCase();
 }
 
 // Function to get recommended daily intake based on gender
 export function getRecommendedIntake(gender: 'male' | 'female' | 'other'): number {
-  // Default values based on our data
-  if (gender === 'male') return 2100;
-  if (gender === 'female') return 1500;
-  return 1800; // Default for 'other'
+  if (gender === 'male') {
+    return 2500;
+  } else if (gender === 'female') {
+    return 2000;
+  }
+  return 2250; // Default for 'other'
 }

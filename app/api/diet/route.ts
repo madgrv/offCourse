@@ -12,7 +12,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<DietData>>> {
       data: dietData
     });
   } catch (error) {
-    console.error('Error fetching diet data:', error);
+
     
     return NextResponse.json(
       {

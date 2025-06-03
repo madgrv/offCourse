@@ -196,7 +196,7 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
-    console.error('Error seeding database:', error);
+
     return NextResponse.json(
       { error: 'An unexpected error occurred while seeding the database.' },
       { status: 500 }

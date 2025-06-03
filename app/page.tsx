@@ -24,7 +24,7 @@ export default function Home() {
   const [selected, setSelected] = React.useState<string | null>(null);
   const [cloning, setCloning] = React.useState(false);
 
-  // Fetch available templates on mount
+
   React.useEffect(() => {
     async function fetchTemplates() {
       setLoading(true);
@@ -40,7 +40,7 @@ export default function Home() {
     fetchTemplates();
   }, []);
 
-  // Handler for selecting and cloning a template
+
   async function handleSelect() {
     if (!selected) return;
     setCloning(true);

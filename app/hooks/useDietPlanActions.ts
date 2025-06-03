@@ -217,7 +217,9 @@ export function useDietPlanActions() {
       setActionErrors((prev) => ({ ...prev, [actionKey]: '' }));
       inFlightCompletions.current.add(actionKey);
 
-      const foodItems = dietPlan?.days[day]?.meals?.[mealType] || [];
+      // Defensive: Only treat as array if it actually is, due to possible union type (FoodItem[] | TwoWeekMeal)
+      const foodItemsRaw = dietPlan?.days[day]?.meals?.[mealType];
+      const foodItems: FoodItem[] = Array.isArray(foodItemsRaw) ? foodItemsRaw : [];
       const foodItem = foodItems[foodIndex];
       if (!foodItem || !foodItem.id) {
         setActionErrors((prev) => ({

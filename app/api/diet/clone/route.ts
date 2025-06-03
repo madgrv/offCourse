@@ -24,6 +24,8 @@ const supabaseAdmin = supabaseServiceKey
   : null;
 
 export async function POST(req: NextRequest) {
+  // Route handler for cloning diet plans
+
   try {
     let requestBody;
     try {
@@ -37,7 +39,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     const { templateId, force = false } = requestBody;
 
     if (!templateId) {
@@ -91,7 +93,7 @@ export async function POST(req: NextRequest) {
 
     // Using admin client to bypass RLS if available
     const dbClient = supabaseAdmin || supabase;
-    
+
     // Check if user already has a diet plan
     const { data: existingPlans, error: existingPlanError } = await dbClient
       .from('diet_plans')
@@ -99,19 +101,19 @@ export async function POST(req: NextRequest) {
       .eq('owner_id', user.id)
       .eq('is_template', false)
       .order('created_at', { ascending: false });
-      
+
     const hasExistingPlan = existingPlans && existingPlans.length > 0;
     const existingPlanId = hasExistingPlan ? existingPlans[0].id : null;
-    
+
     // We already have the force flag from the request body
-    
+
     // If user has a plan and force is false, return info about existing plan
     if (hasExistingPlan && !force) {
       return NextResponse.json({
         success: true,
         hasExistingPlan: true,
         existingPlan: existingPlans[0],
-        message: 'User already has a diet plan. Set force=true to override.'
+        message: 'User already has a diet plan. Set force=true to override.',
       });
     }
 
@@ -123,7 +125,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (templateError) {
-      console.error('Error fetching template:', templateError);
+      console.error('Error fetching template');
       return NextResponse.json(
         {
           success: false,
@@ -135,21 +137,27 @@ export async function POST(req: NextRequest) {
     }
 
     if (!template) {
-      console.error('Template not found with ID:', templateId);
+      console.error('Template not found');
       return NextResponse.json(
         { success: false, error: en.cloneTemplateNotFound },
         { status: 404 }
       );
     }
 
+    // Generate a unique name for the new plan to avoid unique constraint violations
+    // If force is true and there's an existing plan, we'll use a timestamp suffix
+    // Otherwise, we'll use the template name as is
+    const timestamp = new Date()
+      .toISOString()
+      .replace(/[-:.TZ]/g, '')
+      .substring(0, 14);
+    const uniqueSuffix = hasExistingPlan ? ` (${timestamp})` : '';
+
     const newPlanData = {
-      name: template.name,
+      name: `${template.name}${uniqueSuffix}`,
       description: template.description,
-
       is_template: false,
-
       created_at: new Date().toISOString(),
-
       owner_id: user.id,
     };
 
@@ -184,143 +192,158 @@ export async function POST(req: NextRequest) {
       }
 
       newPlan = planData;
-    } catch (insertError) {
-      console.error('Exception during plan creation:', insertError);
-      return NextResponse.json(
-        {
-          success: false,
-          error: `${en.cloneCreatePlanFailed} (${
-            insertError instanceof Error ? insertError.message : 'Unknown error'
-          })`,
-          details: insertError instanceof Error ? insertError.stack : undefined,
-        },
-        { status: 500 }
-      );
-    }
 
-    // Collect errors but continue processing for partial success
-    const errors: any[] = [];
+      // Define types for structured cloning
+      type MealFoodItem = {
+        id: string;
+        diet_meal_id: string;
+        food_item_id: string;
+        quantity: number;
+      };
+      type DayMeal = {
+        id: string;
+        diet_day_id: string;
+        diet_meal_id: string; // Reference to diet_meals (e.g., Breakfast UUID)
+        meal_type: string; // e.g., "Breakfast", "Lunch"
+        meal_food_items?: MealFoodItem[]; // Optional for holding cloned items temporarily
+      };
+      type DietDay = {
+        id: string;
+        plan_week_id: string;
+        day_of_week: string;
+        day_meals?: DayMeal[]; // Optional for holding cloned items temporarily
+      };
+      type PlanWeek = {
+        id: string;
+        diet_plan_id: string;
+        week_number: number;
+        diet_days?: DietDay[]; // Optional for holding cloned items temporarily
+      };
 
-    const { data: templateDays, error: daysError } = await dbClient
-      .from('diet_days')
-      .select('*')
-      .eq('diet_plan_id', templateId);
-    if (daysError) {
-      return NextResponse.json(
-        { success: false, error: en.cloneFetchDaysFailed },
-        { status: 500 }
-      );
-    }
+      // Fetch all components of the template plan
+      const { data: templateWeeksData, error: templateWeeksError } = await dbClient
+        .from('plan_weeks')
+        .select('*, diet_days(*, day_meals(*, meal_food_items!diet_meal_id(*))))')
+        .eq('diet_plan_id', templateId)
+        .order('week_number', { ascending: true })
+        .order('day_of_week', { referencedTable: 'diet_days', ascending: true })
+        // Supabase doesn't easily order by meal_type in day_meals or items in meal_food_items here
+        // We'll rely on their existing order or handle it if specific order is critical later
+        .returns<PlanWeek[]>();
 
-    for (const day of templateDays) {
-      const { data: newDay, error: newDayError } = await dbClient
-        .from('diet_days')
-        .insert({
-          diet_plan_id: newPlan.id,
-          day_of_week: day.day_of_week,
-          total_calories: day.total_calories ?? null,
-        })
-        .select()
-        .single();
-      if (newDayError || !newDay) {
-        errors.push({ type: 'day', templateDayId: day.id, error: newDayError });
-        console.error('Failed to clone day', day.id, newDayError);
-        continue;
+      if (templateWeeksError) {
+        console.error('Error fetching template plan structure');
+        throw new Error('Failed to fetch template plan structure for cloning.');
       }
 
-      const { data: templateMeals, error: mealsError } = await dbClient
-        .from('diet_meals')
-        .select('*')
-        .eq('diet_day_id', day.id);
-      if (mealsError || !templateMeals) {
-        errors.push({
-          type: 'meals',
-          templateDayId: day.id,
-          error: mealsError,
-        });
-        console.error('Failed to fetch meals for day', day.id, mealsError);
-        continue;
-      }
+      if (!templateWeeksData || templateWeeksData.length === 0) {
+        // Template has no weeks, creating empty plan
+        // If template has no weeks, newPlan is already created and empty, which is fine.
+      } else {
+        // Proceed with cloning weeks and their contents
+        for (const templateWeek of templateWeeksData) {
+          const { data: newWeek, error: newWeekError } = await dbClient
+            .from('plan_weeks')
+            .insert({ diet_plan_id: newPlan.id, week_number: templateWeek.week_number })
+            .select('id, week_number')
+            .single();
 
-      for (const meal of templateMeals) {
-        const { data: newMeal, error: newMealError } = await dbClient
-          .from('diet_meals')
-          .insert({
-            diet_day_id: newDay.id,
-            meal_type: meal.meal_type,
-          })
-          .select()
-          .single();
-        if (newMealError || !newMeal) {
-          errors.push({
-            type: 'meal',
-            templateMealId: meal.id,
-            error: newMealError,
-          });
-          console.error('Failed to clone meal', meal.id, newMealError);
-          continue;
-        }
+          if (newWeekError) {
+            console.error('Error inserting new week');
+            throw new Error(`Failed to insert new week ${templateWeek.week_number}.`);
+          }
 
-        const { data: templateFoods, error: foodsError } = await dbClient
-          .from('diet_food_items')
-          .select('*')
-          .eq('diet_meal_id', meal.id);
-        if (foodsError || !templateFoods) {
-          errors.push({
-            type: 'foods',
-            templateMealId: meal.id,
-            error: foodsError,
-          });
-          console.error('Failed to fetch foods for meal', meal.id, foodsError);
-          continue;
-        }
+          if (templateWeek.diet_days) {
+            for (const templateDay of templateWeek.diet_days) {
+              const { data: newDay, error: newDayError } = await dbClient
+                .from('diet_days')
+                .insert({ plan_week_id: newWeek.id, day_of_week: templateDay.day_of_week })
+                .select('id, day_of_week')
+                .single();
 
-        for (const food of templateFoods) {
-          const { error: foodInsertError } = await dbClient
-            .from('diet_food_items')
-            .insert({
-              diet_meal_id: newMeal.id,
-              food_name: food.food_name,
-              calories: food.calories,
-              carbohydrates: food.carbohydrates,
-              sugars: food.sugars,
-              protein: food.protein,
-              fat: food.fat,
-              quantity: food.quantity || 1,
-              unit: food.unit || 'g',
-              completed: food.completed || false,
-            });
-          if (foodInsertError) {
-            errors.push({
-              type: 'food',
-              templateFoodId: food.id,
-              error: foodInsertError,
-            });
-            console.error(
-              'Failed to clone food item',
-              food.id,
-              foodInsertError
-            );
+              if (newDayError) {
+                console.error('Error inserting new day');
+                throw new Error(`Failed to insert new day ${templateDay.day_of_week}.`);
+              }
+
+              if (templateDay.day_meals) {
+                for (const templateMeal of templateDay.day_meals) {
+                  // Fetch the name of the meal_type from diet_meals table
+                  const { data: dietMealTypeDetails, error: dietMealTypeError } = await dbClient
+                    .from('diet_meals') // This is the table like 'Breakfast', 'Lunch' etc.
+                    .select('name')
+                    .eq('id', templateMeal.diet_meal_id) // templateMeal.diet_meal_id is the FK to diet_meals.id
+                    .single();
+
+                  if (dietMealTypeError || !dietMealTypeDetails) {
+                    console.error('Error fetching meal type name');
+                    throw new Error(`Failed to fetch meal type name for ID ${templateMeal.diet_meal_id}.`);
+                  }
+                  
+                  const { data: newMeal, error: newMealError } = await dbClient
+                    .from('day_meals') // This is the junction table being inserted into
+                    .insert({
+                      diet_day_id: newDay.id,
+                      diet_meal_id: templateMeal.diet_meal_id, // FK to diet_meals.id
+                      meal_type: dietMealTypeDetails.name, // The actual string like "Breakfast"
+                    })
+                    .select('id')
+                    .single();
+
+                  if (newMealError) {
+                    console.error('Error inserting new meal');
+                    throw new Error(`Failed to insert new meal ${dietMealTypeDetails.name}.`);
+                  }
+
+                  // Enhanced logging for meal_food_items
+                  // Processing meal food items
+
+                  if (templateMeal.meal_food_items && templateMeal.meal_food_items.length > 0) {
+                    // Cloning food items for meal
+                    for (const templateFoodItem of templateMeal.meal_food_items) {
+                      const { error: newFoodItemError } = await dbClient
+                        .from('meal_food_items')
+                        .insert({
+                          diet_meal_id: newMeal.id, // This is newMeal.id from the day_meals insert
+                          food_item_id: templateFoodItem.food_item_id,
+                          quantity: templateFoodItem.quantity,
+                        });
+
+                      if (newFoodItemError) {
+                        console.error('Error inserting new food item');
+                        throw new Error('Failed to insert new food item.');
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
-    }
+      // All cloning successful
+      return NextResponse.json({
+        success: true,
+        dietPlanId: newPlan.id,
+        message: 'Diet plan cloned successfully.',
+      });
 
-    if (errors.length > 0) {
+    } catch (insertError) {
+      // This catch block is for errors during the creation of newPlan or cloning of its contents
+      console.error('Exception during plan creation or cloning');
       return NextResponse.json(
         {
-          success: true,
-          dietPlanId: newPlan.id,
-          partial: true,
-          errors,
-          message: en.clonePartialSuccess,
+          success: false,
+          error: `${en.cloneCreatePlanFailed} (${insertError instanceof Error ? insertError.message : 'Unknown error during cloning'})`,
+          details: insertError instanceof Error ? { message: insertError.message, stack: insertError.stack } : undefined,
         },
-        { status: 207 }
+        { status: 500 }
       );
     }
-    return NextResponse.json({ success: true, dietPlanId: newPlan.id });
-  } catch (err) {
-    console.error('Error cloning diet:', err);
+    // The main try-catch for request parsing, auth, etc. continues below
+  } catch (err) { // This is the outermost catch block
+
+    console.error('Error cloning diet');
 
     // More detailed error information in development environment
     const errorMessage =

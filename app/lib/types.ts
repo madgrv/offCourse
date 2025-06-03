@@ -14,6 +14,20 @@ export interface FoodItem {
   fat?: number; // Fat in grams
 }
 
+// Processed food item with standardised properties for internal use
+export interface ProcessedFoodItem {
+  id: string;
+  food: string;
+  calories: number;
+  carbs: number; // Total carbohydrates in grams
+  sugars: number; // Sugars in grams (subset of carbs)
+  protein: number; // Protein in grams
+  fat: number; // Fat in grams
+  quantity: number;
+  unit: string;
+  completed: boolean;
+}
+
 // Meal structure with support for two-week plan
 export interface TwoWeekMeal {
   week1: FoodItem[];
@@ -79,6 +93,7 @@ export interface DietData {
   startDate?: string; // ISO string date when the plan was created
   nutritionalInfo?: NutritionalInfo;
   foodReference?: FoodReference;
+  isDefaultStructure?: boolean; // Flag to indicate if this is a default structure created when no weeks are found
 }
 
 // User profile

@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
         .single();
       if (newDayError || !newDay) {
         errors.push({ type: 'day', templateDayId: day.id, error: newDayError });
-        console.error('Failed to clone day', day.id, newDayError);
+
         continue;
       }
 
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
         .eq('diet_day_id', day.id);
       if (mealsError || !templateMeals) {
         errors.push({ type: 'meals', templateDayId: day.id, error: mealsError });
-        console.error('Failed to fetch meals for day', day.id, mealsError);
+
         continue;
       }
 
@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
           .single();
         if (newMealError || !newMeal) {
           errors.push({ type: 'meal', templateMealId: meal.id, error: newMealError });
-          console.error('Failed to clone meal', meal.id, newMealError);
+
           continue;
         }
 
@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
           .eq('diet_meal_id', meal.id);
         if (foodsError || !templateFoods) {
           errors.push({ type: 'foods', templateMealId: meal.id, error: foodsError });
-          console.error('Failed to fetch foods for meal', meal.id, foodsError);
+
           continue;
         }
 
@@ -151,7 +151,7 @@ export async function POST(req: NextRequest) {
             });
           if (foodInsertError) {
             errors.push({ type: 'food', templateFoodId: food.id, error: foodInsertError });
-            console.error('Failed to clone food item', food.id, foodInsertError);
+
           }
         }
       }
@@ -164,7 +164,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, dietPlanId: newPlan.id });
   } catch (err) {
     // Log and return error with detailed information for debugging
-    console.error('Error cloning diet:', err);
+
     
     // Provide more detailed error information in development
     const errorMessage = process.env.NODE_ENV === 'development' 

@@ -14,7 +14,8 @@ import {
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { MealCard } from '@/app/components/custom/MealCard';
 import ProtectedRoute from '@/app/components/auth/ProtectedRoute';
-import DashboardLayout from '@/app/components/layout/DashboardLayout';
+import DashboardLayout from '../components/layout/DashboardLayout';
+import { stripPlanNameTimestamp } from '../lib/utils';
 import {
   getCurrentWeekAndDay,
   formatWeekDay,
@@ -39,7 +40,8 @@ export default function DietPlanPage() {
   const searchParams = useSearchParams();
   const planIdFromUrl = searchParams?.get('planId');
   const forceLoad = searchParams?.get('forceLoad') === 'true';
-  
+  const clearCache = searchParams?.get('clearCache') === 'true';
+
   const { dietPlan, loading: dietPlanLoading, refreshDietPlan } = useDietPlan();
   const { user } = useAuth();
   const {
@@ -71,57 +73,66 @@ export default function DietPlanPage() {
       setSelectedWeek(week); // Set selected week to current week in the cycle
     }
   }, [loading, dietPlan?.startDate]);
-  
+
   // Function to check if diet plan has two weeks of data
   const hasTwoWeeks = () => {
     if (!dietPlan?.days) return false;
-    
+
     // Get all day keys
     const dayKeys = Object.keys(dietPlan.days);
-    
+
     // Method 1: Look for explicit week2 pattern in day keys
-    const hasWeek2Pattern = dayKeys.some(key => {
+    const hasWeek2Pattern = dayKeys.some((key) => {
       return key.includes('week2') || key.includes('Week2');
     });
-    
+
     // Method 2: Check if we have both week1 and week2 prefixed days
-    const hasWeek1Days = dayKeys.some(key => key.startsWith('week1_'));
-    const hasWeek2Days = dayKeys.some(key => key.startsWith('week2_'));
+    const hasWeek1Days = dayKeys.some((key) => key.startsWith('week1_'));
+    const hasWeek2Days = dayKeys.some((key) => key.startsWith('week2_'));
     const hasBothWeeks = hasWeek1Days && hasWeek2Days;
-    
+
     // Method 3: Check if we have 14 days (7 days × 2 weeks)
     // This is a fallback for plans that might use a different naming convention
     const hasFourteenDays = dayKeys.length >= 14;
-    
+
     // A plan has two weeks if any of the detection methods returns true
     const isTwoWeekPlan = hasWeek2Pattern || hasBothWeeks || hasFourteenDays;
-    
+
     return isTwoWeekPlan;
   };
 
-  // Force refresh when plan ID changes in URL or when forceLoad is true
+  // Refresh diet plan data when necessary based on URL parameters
   useEffect(() => {
-    if (planIdFromUrl) {
-      console.log('Loading diet plan with ID:', planIdFromUrl);
-      
-      // If forceLoad is true, explicitly refresh the data
-      if (forceLoad) {
-        console.log('Force loading diet plan data');
-        refreshDietPlan();
-      }
+    // Only refresh if we have a plan ID and the user is authenticated
+    if (!planIdFromUrl || !user) return;
+
+    // Create a unique key for this specific plan ID
+    const refreshAttemptKey = `refresh_attempt_${planIdFromUrl}`;
+    const hasAttemptedRefresh = sessionStorage.getItem(refreshAttemptKey);
+
+    // Removed debug log
+    // Only refresh if:
+    // 1. We haven't attempted to refresh this specific plan ID yet, OR
+    // 2. clearCache is explicitly set to true (manual refresh requested)
+    if (!hasAttemptedRefresh || clearCache) {
+      // Mark that we've attempted to refresh this plan to prevent duplicate refreshes
+      sessionStorage.setItem(refreshAttemptKey, 'true');
+
+      // Refresh the diet plan data
+      refreshDietPlan();
     }
-  }, [planIdFromUrl, forceLoad, refreshDietPlan]);
+  }, [planIdFromUrl, clearCache, user, refreshDietPlan]);
 
   // State to track the active tab
   const [activeTab, setActiveTab] = useState<string>('');
-  
+
   // Format the default tab with week prefix
   const currentDay = currentWeekAndDay.day;
   const defaultTab = formatWeekDay(
     selectedWeek,
     days.includes(currentDay) ? currentDay : days[0]
   );
-  
+
   // Set initial active tab when component mounts or when defaultTab changes
   useEffect(() => {
     setActiveTab(defaultTab);
@@ -178,13 +189,54 @@ export default function DietPlanPage() {
       <DashboardLayout>
         <div className='container mx-auto px-4 py-8'>
           <h1 className='text-3xl font-bold mb-2'>
-            {dietPlan.planName || en.dietPlan.defaultTitle}
+            {stripPlanNameTimestamp(dietPlan.planName || en.dietPlan.defaultTitle)}
           </h1>
+
+          {/* Display debugging info if needed */}
+          {dietPlan && !loading && Object.keys(dietPlan.days).length === 0 && (
+            <div className='mb-2 p-2 bg-gray-100 rounded text-sm text-gray-600'>
+              <p>No days found in diet plan data structure.</p>
+            </div>
+          )}
+
+          {/* Display a notice if no plan data is found */}
+          {dietPlan && !loading && Object.keys(dietPlan.days).length === 0 && (
+            <div className='mb-4 p-4 border border-amber-300 bg-amber-50 rounded-md'>
+              <h2 className='text-lg font-semibold text-amber-800 mb-2'>
+                No Diet Plan Data Found
+              </h2>
+              <p className='text-amber-700 mb-2'>
+                We couldn&apos;t find any data for your diet plan. This could be
+                because the plan hasn&apos;t been properly set up yet.
+              </p>
+              <div className='flex space-x-2'>
+                <Button
+                  onClick={() => refreshDietPlan()}
+                  className='bg-amber-600 hover:bg-amber-700 text-white'
+                >
+                  Refresh Plan Data
+                </Button>
+                <Button
+                  onClick={() => {
+                    // Clear the diet plan ID cookie
+                    document.cookie =
+                      'selected_diet_plan_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+                    // Reload the page
+                    window.location.href = '/diet-plan';
+                  }}
+                  variant='outline'
+                >
+                  Clear Plan Selection
+                </Button>
+              </div>
+            </div>
+          )}
 
           {/* Week selector */}
           <div className='flex justify-between items-center mb-4'>
             <div className='text-sm text-muted-foreground'>
-              Today is {currentDay} {hasTwoWeeks() && `(Week ${currentWeekAndDay.week})`}
+              Today is {currentDay}{' '}
+              {hasTwoWeeks() && `(Week ${currentWeekAndDay.week})`}
             </div>
             {hasTwoWeeks() && (
               <div className='flex space-x-2'>
@@ -218,7 +270,12 @@ export default function DietPlanPage() {
             )}
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue={defaultTab} className='mb-4'>
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            defaultValue={defaultTab}
+            className='mb-4'
+          >
             <TabsList className='flex-nowrap overflow-x-auto scrollbar-none w-full'>
               {days.map((day) => (
                 <TabsTrigger
