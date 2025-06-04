@@ -1,8 +1,10 @@
+'use client';
+
 import useSWR, { mutate } from 'swr';
 import { getDietData } from '../lib/data';
 import { useAuth } from '../context/auth-context';
 import { DietData } from '../lib/types';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, ReadonlyURLSearchParams } from 'next/navigation';
 
 export const DIET_PLAN_CACHE_KEY = '/api/diet-plan';
 
@@ -16,19 +18,28 @@ function getCookie(name: string): string | null {
   return null;
 }
 
-export function useDietPlanData() {
+// This function extracts parameters from search params without using the hook directly
+// This allows us to pass the already obtained searchParams to the hook
+function extractParamsFromSearch(searchParams: ReadonlyURLSearchParams | null) {
+  return {
+    planIdFromUrl: searchParams?.get('planId') || null,
+    clearCache: searchParams?.get('clearCache') === 'true',
+    includeTemplates: searchParams?.get('includeTemplates') === 'true'
+  };
+}
+
+// Core hook that doesn't directly use useSearchParams
+export function useDietPlanDataCore({
+  planIdFromUrl,
+  clearCache,
+  includeTemplates
+}: {
+  planIdFromUrl: string | null;
+  clearCache: boolean;
+  includeTemplates: boolean;
+}) {
   const { user } = useAuth();
-  const searchParams = useSearchParams();
-  
-  // Check for plan ID in URL parameters and cookies
-  const planIdFromUrl = searchParams?.get('planId');
   const planIdFromCookie = getCookie('selected_diet_plan_id');
-  
-  // Check if cache clearing is requested
-  const clearCache = searchParams?.get('clearCache') === 'true';
-  
-  // Check if we should include template diet plans
-  const includeTemplates = searchParams?.get('includeTemplates') === 'true';
   
   // Validate UUID format to avoid invalid requests
   const isValidUuid = (uuid: string) => {
@@ -101,4 +112,16 @@ export function useDietPlanData() {
     error: error ? (error instanceof Error ? error.message : String(error)) : null,
     refreshDietPlan,
   };
+}
+
+// Hook that uses search params directly (must be used in client components)
+export function useDietPlanDataWithSearchParams() {
+  const searchParams = useSearchParams();
+  const params = extractParamsFromSearch(searchParams);
+  return useDietPlanDataCore(params);
+}
+
+// For backward compatibility - this is the original hook name
+export function useDietPlanData() {
+  return useDietPlanDataWithSearchParams();
 }
